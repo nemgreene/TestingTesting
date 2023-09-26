@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include "play.h"
 class Vec2
 {
 public:
@@ -7,12 +8,15 @@ public:
 	Vec2();
 	Vec2(float _x, float _y);
 	Vec2(const Vec2& other);
+	Vec2(const Point2D& other);
 
 	Vec2 operator+(const Vec2& other);//adding vectors
 	Vec2 operator-(const Vec2& other);//taking away
 	Vec2 operator*(const float other);//multiplying
 
+	friend std::ostream& operator<<(std::ostream& os, const Vec2& point);
 	float mag(Vec2 _Vector); //finds the square root
+	float rad(Vec2 _Vector); //finds the rotation
 
 	float GetX();
 	float GetY();
