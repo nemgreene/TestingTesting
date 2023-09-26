@@ -18,6 +18,12 @@ Vec2::Vec2(const Vec2& other)//make vector from a different vector
 	y = other.y;
 }
 
+Vec2::Vec2(const Point2D& other)
+{
+	x = other.x;
+	y = other.y;
+}
+
 Vec2 Vec2::operator+(const Vec2& other) //adding vectors
 {
 	return Vec2(this->x + other.x, this->y + other.y);
@@ -41,6 +47,12 @@ float Vec2::mag(Vec2 _Vector) //returns the length of the vector
 	float X = _Vector.GetX();
 	float Y = _Vector.GetY();
 	return (float)sqrt(X * X + Y * Y);
+}
+
+float Vec2::rad(Vec2 _Vector)
+{
+	float rotation = atan2(_Vector.GetY(), _Vector.GetX());
+	return rotation;
 }
 
 /*
@@ -72,4 +84,9 @@ void Vec2::SetX(float _x)
 void Vec2::SetY(float _y)
 {
 	y = _y;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vec2& point) {
+	os << point.x << ", " << point.y;
+	return os;
 }
