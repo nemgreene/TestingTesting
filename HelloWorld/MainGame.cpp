@@ -6,7 +6,7 @@
 int DISPLAY_WIDTH = 1280;
 int DISPLAY_HEIGHT = 720;
 int DISPLAY_SCALE = 1;
-Vec2 PlayerPos(640,360);
+Vec2 PlayerPos(500,500);
 
 
 //Detect map collisions one way or another to make sure nobody walks/flies through walls
