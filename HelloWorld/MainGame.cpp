@@ -6,6 +6,7 @@
 int DISPLAY_WIDTH = 1280;
 int DISPLAY_HEIGHT = 720;
 int DISPLAY_SCALE = 1;
+
 Vec2 PlayerPos(240,160);
 
 
