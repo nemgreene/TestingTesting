@@ -49,9 +49,9 @@ float Vec2::mag(Vec2 _Vector) //returns the length of the vector
 	return (float)sqrt(X * X + Y * Y);
 }
 
-float Vec2::rad(Vec2 _Vector)
+float Vec2::rad()
 {
-	float rotation = atan2(_Vector.GetY(), _Vector.GetX());
+	float rotation = atan2(y, x);
 	return rotation;
 }
 

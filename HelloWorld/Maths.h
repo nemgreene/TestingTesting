@@ -16,7 +16,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Vec2& point);
 	float mag(Vec2 _Vector); //finds the square root
-	float rad(Vec2 _Vector); //finds the rotation
+	float rad(); //finds the rotation
 
 	float GetX();
 	float GetY();
