@@ -1221,6 +1221,7 @@ public:
 	void DrawTransparent( int spriteId, Point2f pos, int frameIndex, float alphaMultiply ) const; // This just to force people to consider when they use an explicit alpha multiply
 	// Draw the sprite rotated with transparency (slowest draw)
 	void DrawRotated( int spriteId, Point2f pos, int frameIndex, float angle, float scale = 1.0f, float alphaMultiply = 1.0f ) const;
+	void DrawRotatedScaled(int spriteId, Point2f pos, int frameIndex, float angle, std::vector<float> scale = {1.0f, 1.0f}, float alphaMultiply = 1.0f) const;
 	// Draw the sprite using a matrix transformation and transparency (slowest draw)
 	void DrawTransformed( int spriteId, const Matrix2D& transform, int frameIndex, float alphaMultiply = 1.0f ) const;
 	// Draws a previously loaded background image
@@ -1493,6 +1494,7 @@ struct GameObject
 	Point2D oldPos{ 0.0f, 0.0f };
 	Vector2D velocity{ 0.0f, 0.0f };
 	Vector2D acceleration{ 0.0f, 0.0f };
+	Vector2D spriteScale{ 1.0f, 1.0f };
 	float rotation{ 0.0f };
 	float rotSpeed{ 0.0f };
 	float oldRot{ 0.0f };
@@ -1737,6 +1739,8 @@ namespace Play
 	void DrawObjectTransparent( GameObject& obj, float opacity );
 	// Draws the object's sprite with rotation and transparency (slower than DrawObject)
 	void DrawObjectRotated( GameObject& obj, float opacity = 1.0f );
+
+	void DrawObjectRotatedScaled(GameObject& obj, std::vector<float> scale = {1.0f,1.0f});
 
 #endif
 
@@ -3177,6 +3181,11 @@ void PlayGraphics::DrawRotated( int spriteId, Point2f pos, int frameIndex, float
 	Matrix2D trans =  MatrixScale( scale, scale ) * MatrixRotation( angle );
 	trans.row[2] = { pos.x, pos.y, 1.0f };
 	DrawTransformed( spriteId, trans, frameIndex, alphaMultiply );
+}void PlayGraphics::DrawRotatedScaled( int spriteId, Point2f pos, int frameIndex, float angle, std::vector<float>scale, float alphaMultiply ) const
+{
+	Matrix2D trans =  MatrixScale( scale[0], scale[1]) * MatrixRotation(angle);
+	trans.row[2] = { pos.x, pos.y, 1.0f };
+	DrawTransformed( spriteId, trans, frameIndex, alphaMultiply );
 }
 
 void PlayGraphics::DrawTransformed( int spriteId, const Matrix2D& trans, int frameIndex, float alphaMultiply ) const
@@ -4102,7 +4111,7 @@ namespace Play
 	void PresentDrawingBuffer()
 	{
 		PlayGraphics& pblt = PlayGraphics::Instance();
-		static bool debugInfo = false;
+		static bool debugInfo = true;
 		DrawingSpace originalDrawSpace = drawSpace;
 
 		if( KeyPressed( VK_F1 ) )
@@ -4745,6 +4754,11 @@ namespace Play
 	{
 		if( obj.type == -1 ) return; // Don't draw noObject
 		PlayGraphics::Instance().DrawRotated( obj.spriteId, TRANSFORM_SPACE( obj.pos ), obj.frame, obj.rotation, obj.scale, opacity );
+
+	}void DrawObjectRotatedScaled( GameObject& obj, std::vector<float>scale )
+	{
+		if( obj.type == -1 ) return; // Don't draw noObject
+		PlayGraphics::Instance().DrawRotatedScaled( obj.spriteId, TRANSFORM_SPACE( obj.pos ), obj.frame, obj.rotation, scale, 1.0f );
 	}
 
 #endif
