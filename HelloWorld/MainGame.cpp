@@ -6,6 +6,7 @@
 #include "Utilities.h"
 #include "HandleInputs.h"
 #include "Gun.h"
+#include "UI.h"
 
 
 int DISPLAY_WIDTH = 1280;
@@ -42,12 +43,12 @@ void HandleEnemyMovement();
 // random movement pattern
 // VV
 //a* pathfinding, raytracing
-
 #pragma endregion
 
 
 SpriteManager spriteManager = SpriteManager();
 Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2");
+//UI theUI = UI::UI(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 
 
@@ -60,7 +61,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
 	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { 100, 200 }, 50, "lava_gun");
 	int iRobit = Play::CreateGameObject(TYPE_ENEMY, { 350, 350 }, 50, "robit");
-
+	// int
 
 
 	std::map<int, std::string> mCharLevel = { {iPlayer, "fry_ruinning_down_6"}, {iGunPrimary, "lava_gun_1"}, {iRobit, "robit_running_down_6"} };
@@ -96,6 +97,8 @@ bool MainGameUpdate( float elapsedTime )
 	primaryGun.moveBullets();
 
 	//
+	//Ui sprite render
+	handleUI(60, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 	utilJanitor();
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );

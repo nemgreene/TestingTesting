@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-#include "play.h"
+#include "Play.h"
 class Vec2
 {
 public:
