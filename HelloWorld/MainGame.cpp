@@ -6,12 +6,15 @@
 #include "Utilities.h"
 #include "HandleInputs.h"
 #include "Gun.h"
+#include "UI.h"
 
 
 int DISPLAY_WIDTH = 1280;
 int DISPLAY_HEIGHT = 720;
 int DISPLAY_SCALE = 1;
+
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
+
 
 
 
@@ -34,13 +37,13 @@ void HandleEnemyMovement();
 // random movement pattern
 // VV
 //a* pathfinding, raytracing
-
 #pragma endregion
 
 
 SpriteManager spriteManager = SpriteManager();
 
 Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2", &spriteManager);
+
 
 
 
@@ -63,6 +66,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 		{{iGunPrimary, "lava_gun_1"}},       //Guns          5
 		{}									 //foreground    6
 	};
+
 	spriteManager.initializeSprites(vInitializeSpriteMap);
 
 }
@@ -85,7 +89,9 @@ bool MainGameUpdate( float elapsedTime )
 	//tick all bullets
 	primaryGun.moveBullets();
 
-	//cleanup
+	//Ui sprite render
+	handleUI(60, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
 	utilJanitor();
 	//display
 	Play::PresentDrawingBuffer();
