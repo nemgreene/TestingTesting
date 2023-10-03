@@ -5,10 +5,11 @@
 #include "Play.h"
 #include "Gun.h"
 
-// 0000JKK
-//
-void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun);
-
+//pawn class
+// characeter
+//	enemies
+// movePawn (vector)
+bool toggle = false;
 
 void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun)
 {
@@ -16,12 +17,5 @@ void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun)
 	if (Play::KeyPressed(VK_LBUTTON))
 	{
 		primaryGun->spawnBullet(vPlayerPos, vAimVector);
-		primaryGun->spawnBullet(vPlayerPos, vAimVector);
-		//primary.makeBullet(origin, vector)
-		//int iBullet = Play::CreateGameObject(TYPE_BULLET, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "acid_bullets_4");
-		//pass to spriteManager
-		// 
-		//fire primary gun
 
 	}
-}

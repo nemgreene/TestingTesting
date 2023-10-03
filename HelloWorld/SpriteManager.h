@@ -5,39 +5,26 @@
 #include "Play.h"
 
 
-//Abstraction to handle drawing all sprites
-//will likely need to handle a hierarchy/order/z-index to draw foregroud/background
-
-//Inintialize sprite library
-//define layers:
-//inintialize sprites
-//check sprites: verify that player/enemy sprites are drawn in the corrrect order
-//update sprites: manually change the layer a sprite is drawn on 
-
-	//Sprites have to be draw in a dynamic order
-	//when a character is facind down, gun is draw on top
-	//when a char is facing up, gun is drawn below
-	//some bg elements need to be drawn on top of the characters, as they should be able to walk behind them
-	//we need to be able to restrucutre the hierarchy of sprites dynamically frame by frame
-	//how do we build this?
-
-	//Could have a predefined number of layers ie : [bg, utility, gun, character, utility, foreground]
-	//that is constructed at the start of the game
-	//then can be updated by calling UpdateSprites()
-
-	//ie on game start   [bg, utility, gun, character, utility, foreground]
-	//during runtime upateSprites(charcater: -1, gun :1)
-	//output             [bg, utility, character, gun, utility, foreground]
-	// 
-	// 
-	//adidtionally we could have a global offest that all positions reference in here that is incremented as the character moves to mimic camera follow
-
 void utilDebugString(std::string debugMessage, int x, int y);
 
 class SpriteManager
+
+
 {
 private:
+	
+	//Nucleus of the sprite manager function
+	//layer system should be:
+	//[Background]  0
+	//[Bullets] 1
+	//[Enemies] <--------------------| will swap
+	//[Enemies guns/utilities]<------|
+	//[Char] <--]
+	//[Gun] <---] will swap
+	//[ForeGround]
 	std::vector<std::map<int, std::string>> _spriteCache;
+
+
 	std::map<int, std::string> _rotationCache;
 
 
@@ -88,6 +75,21 @@ private:
 			changeSprites(player.GetId(), "fry_ruinning_up_6");
 		}
 	};
+
+
+	Vec2 _findSpriteCoords(int id) {
+		for (unsigned int y = 0; y < _spriteCache.size(); y++)
+		{
+			if (_spriteCache[y].find(id) != _spriteCache[y].end())
+			{
+				Vec2 ret = Vec2(_spriteCache[y].find(id)->first, y);
+				return ret;
+
+			}
+		}
+		return(Vec2(-1, -1));
+	}
+
 public:
 	//load all sprites into cache, build layers, iterate over them, draw them in order 
 	void initializeSprites(std::vector<std::map<int, std::string>> vInitializeSpriteMap)
@@ -98,21 +100,43 @@ public:
 	//Change a game objects animation by id
 	void changeSprites(int id, std::string spriteName )
 	{
-		for (unsigned int y = 0; y < _spriteCache.size(); y++)
+		Vec2 coords = _findSpriteCoords(id);
+		if (coords.GetX() != -1)
 		{
-			if(_spriteCache[y].find(id) != _spriteCache[y].end());
-			{
-				_spriteCache[y][id] = spriteName;
-			}
+			_spriteCache[coords.GetY()][coords.GetX()] = spriteName;
+		}
+	}
+	//add sprite to cache
+	// 
+	void addSprite(int id, std::string spriteName, int layerIndex )
+	{
+		_spriteCache[layerIndex][id] = spriteName;
+	};
+	// 
+	//chain animations together, with callback
+
+	//Move a sprite id to a different render layer
+	void updateSpriteOrder(std::vector < std::vector<int>> sprites) {
+
+		for (std::vector<int> spriteIdentifier : sprites)
+		{
+			//find coords in map where sprite id is
+			Vec2 targ = _findSpriteCoords(spriteIdentifier[0]);
+			//get sprite name
+			std::string targetSprite = _spriteCache[targ.GetY()][targ.GetX()];
+			//remove sprite from layer
+			_spriteCache[targ.GetY()].erase(targ.GetX());
+			//add to new layer
+			_spriteCache[spriteIdentifier[1]].insert(std::pair<int, std::string>(spriteIdentifier[0], targetSprite));
 		}
 
-	};
+	}
 
 
-	//Run every tick to animate all the sprites
+	//Run every tick to animate all the sprites IN _SPRITECACHE
 	void tickSprites(Vec2 vMousePos, float fAimVec)
 	{
-		_checkPlayerSprite(vMousePos, fAimVec);
+		//_checkPlayerSprite(vMousePos, fAimVec);
 
 		for (std::map<int, std::string> layer : _spriteCache)
 		{

@@ -32,12 +32,6 @@ void HandleInputs() {
 	//reload, handle perfect reload
 };
 
-//each gun class should have its own method to update its own bullets, encapsulating custom bullet behavior in each gun//
-//long term memory efficiency may infom if keeping a single list of all bullets in memory is more efficient, or having each gun track its own bullet
-//void GunsShouldUpdateTheirBullets() {
-//	charObject.primaryGun.updateBullets();
-//	charObject.secondaryGun.updateBullets();
-//};
 
 void HandleEnemyMovement();
 // random movement pattern
@@ -47,8 +41,9 @@ void HandleEnemyMovement();
 
 
 SpriteManager spriteManager = SpriteManager();
-Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2");
-//UI theUI = UI::UI(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
+Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2", &spriteManager);
+
 
 
 
@@ -59,48 +54,48 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::CentreAllSpriteOrigins();
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
-	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { 100, 200 }, 50, "lava_gun");
+	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "lava_gun");
 	int iRobit = Play::CreateGameObject(TYPE_ENEMY, { 350, 350 }, 50, "robit");
-	// int
 
-
-	std::map<int, std::string> mCharLevel = { {iPlayer, "fry_ruinning_down_6"}, {iGunPrimary, "lava_gun_1"}, {iRobit, "robit_running_down_6"} };
-
-
-
-	std::vector<std::map<int, std::string>> vInitializeSpriteMap = { mCharLevel };
+	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
+		{},                                  //Background    0
+		{},                                  //Bullets       1
+		{{iRobit, "robit_running_down_6"}} , //Enemies       2
+		{},                                  //enemies guns  3
+		{{iPlayer, "fry_ruinning_down_6"} }, //Char          4
+		{{iGunPrimary, "lava_gun_1"}},       //Guns          5
+		{}									 //foreground    6
+	};
 
 	spriteManager.initializeSprites(vInitializeSpriteMap);
+
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cOrange );
-
 	//get mouse position
 	Vec2 vMousePos = Play::GetMousePos();
-
-	
 	//calculate aim vector
 	Vec2 vAimVec = utilHandleCursorDirection( vPlayerPos, vMousePos);
 
-	//utilDebugString()
-	utilDebugString( "X: " + std::to_string(vAimVec.GetX()) , 100, 100);
-	utilDebugString( "Y: " + std::to_string(vAimVec.GetY()) , 100, 125);
-
-
-	spriteManager.tickSprites(vMousePos, vAimVec.rad());
-
+	//catch user inputs
 	handleInputs(vPlayerPos, vAimVec, &primaryGun);
 
+	//tick all sprites
+	spriteManager.tickSprites(vMousePos, vAimVec.rad());
+
+	//tick all bullets
 	primaryGun.moveBullets();
 
-	//
 	//Ui sprite render
 	handleUI(60, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
 	utilJanitor();
+	//display
 	Play::PresentDrawingBuffer();
+	//dismount
 	return Play::KeyDown( VK_ESCAPE );
 }
 
@@ -110,20 +105,4 @@ int MainGameExit( void )
 	Play::DestroyManager();
 	return PLAY_OK;
 }
-
-
-//aim bullet at mouse
-//GameObject& obj_bullet = Play::GetGameObjectByType(TYPE_BULLET);
-// 
-//obj_bullet.rotation = vAimVec.rad();
-
-//Play::SetSprite(obj_bullet, "laser_2", 0.5);
-//Play::UpdateGameObject(obj_bullet);
-//Play::DrawObjectRotated(obj_bullet);	
-//
-/*GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
-
-Play::SetSprite(player, "fry_ruinning_down_6", 0.2f);
-Play::UpdateGameObject(player);
-Play::DrawObjectRotated(player);*/
 

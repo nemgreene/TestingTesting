@@ -27,11 +27,7 @@ void utilDebugString(std::string debugMessage, int x, int y) {
 
 
 void utilJanitor() {
+
 	Play::DestroyGameObjectsByType(TYPE_DESTROYED);
-	//std::vector<int> cleanup = Play::CollectGameObjectIDsByType(TYPE_DESTROYED);
-	//for (int destroy : cleanup)
-	//{
-	//	GameObject& toDestroy = Play::DestroyGameOject
-	//}
 
 }
