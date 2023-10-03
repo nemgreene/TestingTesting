@@ -4,12 +4,14 @@
 #include "Maths.h"
 #include "Play.h"
 #include "Utilities.h"
+#include "SpriteManager.h"
 
 
-Gun::Gun(enum GameObjectType bulletType, std::string spriteName) {
+Gun::Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager) {
 	_bulletSpeed = 1.0f;
 	_bulletType = bulletType;
 	_spriteName = spriteName;
+	_spriteManager = spriteManager;
 
 }
 
@@ -21,9 +23,10 @@ void Gun::spawnBullet(Vec2 vOrigin, Vec2 vDir)
 	bulletSpawned.velocity = { vDir.GetX(),vDir.GetY(), };
 	bulletSpawned.rotation = vDir.rad();
 
-}
+	//pass to sprite manager to track drawing
+	Gun::_spriteManager->addSprite(iBullet, _spriteName, 1);
 
-void checkCollisions(int id1, int id2);
+}
 	
 void Gun::moveBullets()
 {
@@ -35,6 +38,11 @@ void Gun::moveBullets()
 	{
 		
 		GameObject& bullet= Play::GetGameObject(iBullet);
+		if (Play::IsLeavingDisplayArea(bullet)) {
+				bullet.type = TYPE_DESTROYED;
+				Play::UpdateGameObject(bullet);
+				continue;
+		}
 		for (int id : vEnemyIds)
 		{
 			//get enemy game objecvt
@@ -47,14 +55,5 @@ void Gun::moveBullets()
 				Play::UpdateGameObject(enemy);
 			}
 		}
-		if (bullet.type != TYPE_DESTROYED)
-		{
-
-			Play::SetSprite(bullet, "laser_2", 0.2f);
-			Play::UpdateGameObject(bullet);
-			Play::DrawObjectRotated(bullet);
-		}
-
 	}
-	
 }

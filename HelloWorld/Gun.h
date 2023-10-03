@@ -3,11 +3,12 @@
 #include <string>
 #include "Maths.h"
 #include "Play.h"
+#include "SpriteManager.h"
 class Gun
 {
 public:
 
-	Gun(enum GameObjectType, std::string spriteName);
+	Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager);
 	//generate a bullet
 	//add bullet to _bullets 
 	void spawnBullet(Vec2 vOrigin, Vec2 vDir);
@@ -21,6 +22,7 @@ private:
 	enum GameObjectType _bulletType;
 	float _bulletSpeed;
 	std::string _spriteName;
+	SpriteManager* _spriteManager;
 
 
 };
