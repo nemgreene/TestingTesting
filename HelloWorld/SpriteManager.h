@@ -39,6 +39,9 @@ public:
 	void updateSpriteOrder(std::vector < std::vector<int>> sprites);
 	//delete sprite from cache
 	void deleteSprites(int id);
+
+	//chain animations, 
+
 	//Run every tick to animate all the sprites IN _SPRITECACHE
 	void tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime);
 };
