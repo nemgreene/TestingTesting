@@ -19,3 +19,4 @@ void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun)
 		primaryGun->spawnBullet(vPlayerPos, vAimVector);
 
 	}
+}
