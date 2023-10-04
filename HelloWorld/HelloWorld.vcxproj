@@ -190,16 +190,22 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyController.cpp" />
     <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="HandleInputs.cpp" />
     <ClCompile Include="MainGame.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Maths.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Play.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyController.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="HandleInputs.h" />
     <ClInclude Include="Maths.h" />

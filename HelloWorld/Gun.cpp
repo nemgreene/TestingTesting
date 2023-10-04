@@ -4,8 +4,9 @@
 #include "Maths.h"
 #include "Play.h"
 #include "Utilities.h"
-#include "SpriteManager.h"
 
+
+Gun::Gun(){};
 
 Gun::Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager) {
 	_bulletSpeed = 1.0f;

@@ -1,11 +1,15 @@
 #define PLAY_IMPLEMENTATION
 #define PLAY_USING_GAMEOBJECT_MANAGER
+#include "Gun.h"
 #include "Play.h"
 #include "Maths.h"
-#include "SpriteManager.h"
+#include "Enemy.h"
 #include "Utilities.h"
 #include "HandleInputs.h"
-#include "Gun.h"
+#include "SpriteManager.h"
+#include "EnemyController.h"
+
+//#include "Pawn.h"
 
 
 int DISPLAY_WIDTH = 1280;
@@ -40,7 +44,14 @@ void HandleEnemyMovement();
 
 SpriteManager spriteManager = SpriteManager();
 
-Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2", &spriteManager);
+
+Gun primaryGun = Gun(TYPE_BULLET_PRIMARY, "laser_2", &spriteManager);
+
+EnemySchema robitSchema = { primaryGun, "robit_running_down" };
+std::map<int, EnemySchema> enemyGenerationSchema = { {12, robitSchema} };
+
+EnemyController enemyController = EnemyController(enemyGenerationSchema, &spriteManager);
+
 
 
 
@@ -52,18 +63,22 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
 	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "lava_gun");
-	int iRobit = Play::CreateGameObject(TYPE_ENEMY, { 350, 350 }, 50, "robit");
+
+
 
 	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
 		{},                                  //Background    0
 		{},                                  //Bullets       1
-		{{iRobit, "robit_running_down_6"}} , //Enemies       2
+		{} , //Enemies       2
 		{},                                  //enemies guns  3
 		{{iPlayer, "fry_ruinning_down_6"} }, //Char          4
 		{{iGunPrimary, "lava_gun_1"}},       //Guns          5
 		{}									 //foreground    6
 	};
 	spriteManager.initializeSprites(vInitializeSpriteMap);
+
+	enemyController.spawnEnemies();
+
 
 }
 
@@ -80,13 +95,17 @@ bool MainGameUpdate( float elapsedTime )
 	handleInputs(vPlayerPos, vAimVec, &primaryGun);
 
 	//tick all sprites
-	spriteManager.tickSprites(vMousePos, vAimVec.rad());
+	spriteManager.tickSprites(vMousePos, vAimVec.rad(), elapsedTime);
 
 	//tick all bullets
 	primaryGun.moveBullets();
 
 	//cleanup
 	utilJanitor();
+
+	//after all enemies/bullets have been destroyed, bring in next round of enemy movements
+	enemyController.moveEnemies();
+
 	//display
 	Play::PresentDrawingBuffer();
 	//dismount

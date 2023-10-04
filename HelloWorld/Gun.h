@@ -4,10 +4,16 @@
 #include "Maths.h"
 #include "Play.h"
 #include "SpriteManager.h"
+
+//#include "EnemyController.h"
+
+
+
 class Gun
 {
 public:
 
+	Gun();
 	Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager);
 	//generate a bullet
 	//add bullet to _bullets 

@@ -1,6 +1,11 @@
+
+#ifndef UTILITIES_H
+#define UTILITIES_H
 #define PLAY_USING_GAMEOBJECT_MANAGER
+
 #include "Play.h"
 #include "Maths.h"
+#include "Gun.h"
 
 #pragma once
 
@@ -28,3 +33,12 @@ enum GameObjectType
 	TYPE_GUN_PRIMARY,
 	TYPE_DESTROYED
 };
+
+struct EnemySchema {
+	Gun gun;
+	std::string sprite;
+	int health;
+};
+
+
+#endif
