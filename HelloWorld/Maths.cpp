@@ -1,3 +1,4 @@
+#pragma once
 #include "Maths.h"
 
 Vec2::Vec2()//empty constructor overload
@@ -23,6 +24,7 @@ Vec2::Vec2(const Point2D& other)
 	x = other.x;
 	y = other.y;
 }
+
 
 Vec2 Vec2::operator+(const Vec2& other) //adding vectors
 {
@@ -86,7 +88,8 @@ void Vec2::SetY(float _y)
 	y = _y;
 }
 
-std::ostream& operator<<(std::ostream& os, const Vec2& point) {
+std::ostream& operator<<(std::ostream& os, const Vec2& point)
+{
 	os << point.x << ", " << point.y;
 	return os;
 }

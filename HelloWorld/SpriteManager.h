@@ -1,7 +1,4 @@
 #pragma once
-#ifndef SPRITEMANAGER_HEADER;
-#define SPRITEMANAGER_HEADER
-
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include <string>
 #include "Maths.h"
@@ -45,4 +42,3 @@ public:
 	//Run every tick to animate all the sprites IN _SPRITECACHE
 	void tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime);
 };
-#endif

@@ -1,5 +1,6 @@
+#pragma once
 #include "HandleInputs.h"
-
+#include "Play.h"
 
 void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun)
 {

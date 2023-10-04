@@ -1,6 +1,9 @@
-#include "Utilities.h"
-
 #pragma once
+#define PLAY_USING_GAMEOBJECT_MANAGER
+#include "Utilities.h"
+#include "Maths.h"
+#include "Play.h"
+
 
 // Accepts 2 position vectors, and calculates the directional vector from vec1 to vec 2
 // Arguments:

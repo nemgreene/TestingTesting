@@ -1,9 +1,7 @@
-#pragma once
 #define PLAY_USING_GAMEOBJECT_MANAGER
+#pragma once
 #include <string>
 #include "Maths.h"
-#include "Play.h"
-#include "Utilities.h"
 #include "SpriteManager.h"
 #include "Gun.h"
 
@@ -13,7 +11,7 @@ private:
 	float _speed;
 	int _health;
 	SpriteManager* _spriteManager;
-	Gun _equippedGun;
+	Gun* _equippedGun = nullptr;
 	int _iEnemyId;
 	//bullet frequency set
 	float _frequency;

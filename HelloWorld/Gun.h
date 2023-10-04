@@ -1,20 +1,17 @@
-#pragma once
 #define PLAY_USING_GAMEOBJECT_MANAGER
+#pragma once
 #include <string>
 #include "Maths.h"
-#include "Play.h"
 #include "SpriteManager.h"
-
-//#include "EnemyController.h"
-
-
+#include "Utilities.h"
 
 class Gun
 {
 public:
 
 	Gun();
-	Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager);
+	
+	Gun(GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager);
 	//generate a bullet
 	//add bullet to _bullets 
 	void spawnBullet(Vec2 vOrigin, Vec2 vDir);
@@ -25,7 +22,7 @@ public:
 	void moveBullets();
 private:
 	//ids of all spawend bullets child to this gun
-	enum GameObjectType _bulletType;
+	GameObjectType _bulletType = GameObjectType::TYPE_PLAYER;
 	float _bulletSpeed;
 	std::string _spriteName;
 	SpriteManager* _spriteManager;

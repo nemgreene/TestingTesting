@@ -1,18 +1,23 @@
+#define PLAY_USING_GAMEOBJECT_MANAGER
+#pragma once
+#include "Play.h"
 #include "Enemy.h"
-
+#include "Maths.h"
+#include "Gun.h"
+#include "Utilities.h"
 
 Enemy::Enemy() {};
 
 Enemy::Enemy(Gun equippedGun, SpriteManager* spriteManager, int health, Vec2 position, std::string spriteName) {
 	const char* PS = spriteName.c_str();
-	_iEnemyId = Play::CreateGameObject(TYPE_ENEMY, {position.GetX(), position.GetY()}, 50, PS );
+	_iEnemyId = Play::CreateGameObject(GameObjectType::TYPE_ENEMY, {position.GetX(), position.GetY()}, 50, PS );
 	
 	spriteManager->addSprite(_iEnemyId, spriteName, 2);
 	//_gameObject = enemyObject;
 	_health = health;
 	_spawnTime = spriteManager->_deltaTime;
 	_frequency = 1;
-	GameObject& enemyObj = Play::GetGameObject(_iEnemyId);
+	enemyObject = &(Play::GetGameObject(_iEnemyId));
 
 
 }
@@ -37,14 +42,14 @@ void Enemy::destruct()
 	GameObject& target = Play::GetGameObject(_iEnemyId);
 	
 	//set type to destroyed to be cleaned up by janitor
-	target.type = TYPE_DESTROYED;
+	target.type = GameObjectType::TYPE_DESTROYED;
 }
 
 //just generates the actual bullets from origin
 void Enemy::fireGun()
 {
-	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
+	GameObject& player = Play::GetGameObjectByType(GameObjectType::TYPE_PLAYER);
 	Vec2 vEnemyAim = utilHandleCursorDirection(Vec2(enemyObject->pos), Vec2(player.pos));
-	_equippedGun.spawnBullet(Vec2(enemyObject->pos), vEnemyAim);
+	_equippedGun->spawnBullet(Vec2(enemyObject->pos), vEnemyAim);
 }
 ;

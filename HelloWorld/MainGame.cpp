@@ -1,9 +1,9 @@
 #define PLAY_IMPLEMENTATION
 #define PLAY_USING_GAMEOBJECT_MANAGER
-#include "Gun.h"
+#pragma once
 #include "Play.h"
+#include "Gun.h"
 #include "Maths.h"
-#include "Enemy.h"
 #include "Utilities.h"
 #include "HandleInputs.h"
 #include "SpriteManager.h"

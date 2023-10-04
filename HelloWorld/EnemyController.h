@@ -1,10 +1,9 @@
 #pragma once
-
 #include "EnemyController.h"
-#include "Utilities.h"
 #include "Enemy.h"
 #include "SpriteManager.h"
-
+#include "EnemySchema.h"
+#include "Gun.h"
 
 class EnemyController
 {

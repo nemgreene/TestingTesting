@@ -1,5 +1,6 @@
-
+#pragma once
 #include "EnemyController.h"
+
 
 EnemyController::EnemyController() {};
 
