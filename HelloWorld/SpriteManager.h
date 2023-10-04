@@ -5,6 +5,7 @@
 #include "Play.h"
 
 
+struct _ChainedObj;
 
 
 class SpriteManager
@@ -20,10 +21,14 @@ private:
 	//[Gun] <---] will swap
 	//[ForeGround]
 
+
 	std::vector<std::map<int, std::string>> _spriteCache;
+	std::vector<_ChainedObj> _chainedCache;
+	std::vector<int> _chainedIds;
 	std::map<int, std::string> _rotationCache;
 	void _checkPlayerSprite(Vec2 vMousePos, float fAimVec);
 	Vec2 _findSpriteCoords(int id);
+	void _continueChain(int id);
 
 public:
 	SpriteManager();
@@ -41,7 +46,7 @@ public:
 	void deleteSprites(int id);
 
 	//chain animations, 
-
+	void chainAnimation(int id, std::string newSprite, int duration, void (*callback)());
 	//Run every tick to animate all the sprites IN _SPRITECACHE
 	void tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime);
 };
