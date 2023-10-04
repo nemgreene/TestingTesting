@@ -5,12 +5,14 @@
 #include "SpriteManager.h"
 #include "Utilities.h"
 #include "HandleInputs.h"
+#include "PlayerMovement.h"
 #include "Gun.h"
 #include "UI.h"
+#include "Map.h"
 
 
-int DISPLAY_WIDTH = 1280;
-int DISPLAY_HEIGHT = 720;
+int DISPLAY_WIDTH = 1023;//38 tiles across
+int DISPLAY_HEIGHT = 924;//21 tiles across
 int DISPLAY_SCALE = 1;
 
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
@@ -52,14 +54,15 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
 	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
 	Play::CentreAllSpriteOrigins();
+	Play::LoadBackground("Data\\Backgrounds\\testing_background.png");
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
 	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "lava_gun");
 	int iRobit = Play::CreateGameObject(TYPE_ENEMY, { 350, 350 }, 50, "robit");
 
 	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
-		{},                                  //Background    0
-		{},                                  //Bullets       1
+		{},		//Background    0
+		{},												  //Bullets       1
 		{{iRobit, "robit_running_down_6"}} , //Enemies       2
 		{},                                  //enemies guns  3
 		{{iPlayer, "fry_ruinning_down_6"} }, //Char          4
@@ -74,15 +77,21 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
-	Play::ClearDrawingBuffer( Play::cOrange );
+	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
+	//Play::ClearDrawingBuffer( Play::cOrange );
+	Play::DrawBackground();
 	//get mouse position
 	Vec2 vMousePos = Play::GetMousePos();
 	//calculate aim vector
-	Vec2 vAimVec = utilHandleCursorDirection( vPlayerPos, vMousePos);
+	Vec2 vAimVec = utilHandleCursorDirection({ player.pos.x,player.pos.y }, vMousePos);
 
+
+	utilDebugString("The mouse is colliding: " + std::to_string(MaxsCollisionChecker({player.pos.x,player.pos.y}, simpleCollisionMap)), 400, 400);
 	//catch user inputs
-	handleInputs(vPlayerPos, vAimVec, &primaryGun);
 
+	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun);
+
+	HandlePlayerMovement();
 	//tick all sprites
 	spriteManager.tickSprites(vMousePos, vAimVec.rad());
 

@@ -146,7 +146,7 @@ public:
 				const char* spriteName = x.second.c_str();
 				Play::SetSprite(obj,spriteName, 0.2f);
 				Play::UpdateGameObject(obj);
-				//Drawing types have differenet computational demand
+				//Drawing types have different computational demand
 				//highest demand
 				if (obj.spriteScale.x != 0 || obj.spriteScale.y != 0 )
 				{

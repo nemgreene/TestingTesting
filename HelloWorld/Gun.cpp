@@ -5,6 +5,7 @@
 #include "Play.h"
 #include "Utilities.h"
 #include "SpriteManager.h"
+#include "Map.h"
 
 
 Gun::Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager) {
@@ -38,7 +39,7 @@ void Gun::moveBullets()
 	{
 		
 		GameObject& bullet= Play::GetGameObject(iBullet);
-		if (Play::IsLeavingDisplayArea(bullet)) {
+		if (MaxsCollisionChecker({ bullet.pos.x, bullet.pos.y }, simpleCollisionMap)) {
 				bullet.type = TYPE_DESTROYED;
 				Play::UpdateGameObject(bullet);
 				continue;

@@ -195,7 +195,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Maths.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utilities.cpp" />
@@ -204,7 +206,9 @@
     <ClInclude Include="..\Play.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="HandleInputs.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Maths.h" />
+    <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utilities.h" />
