@@ -10,6 +10,7 @@
 #include "UI.h"
 #include "Map.h"
 #include "ChickenGun.h"
+#include "EnemyController.h"
 
 int DISPLAY_WIDTH = 1254;//38 tiles across
 int DISPLAY_HEIGHT = 693;//21 tiles across
@@ -54,6 +55,7 @@ void HandleEnemyMovement();
 #pragma endregion
 
 SpriteManager spriteManager = SpriteManager();
+EnemyController enemyController = EnemyController(&spriteManager);
 
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
 Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
@@ -69,14 +71,15 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::LoadBackground("Data\\Backgrounds\\testing_background.png");
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
-	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "Chicken_Gun");
-	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "lava_gun");
-	int iRobit = Play::CreateGameObject(TYPE_ENEMY, { 350, 350 }, 50, "robit");
+	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "Chicken_Gun");
+	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "lava_gun");
+
+
 
 	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
-		{},		//Background    0
-		{},												  //Bullets       1
-		{{iRobit, "robit_running_down_6"}} , //Enemies       2
+		{},		                             //Background    0
+		{},									 //Bullets       1
+		{},									 //Enemies       2
 		{},                                  //enemies guns  3
 		{{iPlayer, "fry_ruinning_down_6"} }, //Char          4
 		{{iGunPrimary, "lava_gun_1"}},       //Guns          5
@@ -84,6 +87,16 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	};
 
 	spriteManager.initializeSprites(vInitializeSpriteMap);
+
+
+	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+	//enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
+	//enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
+	//enemyController.spawnEnemy(TYPE_ENEMY, { 550, 350 }, 5, "robit");
+	//enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+	//enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+
+	enemyController.playerId = iPlayer;
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -118,7 +131,12 @@ bool MainGameUpdate( float elapsedTime )
 	//Ui sprite render
 	handleUI(gameState.PlayerCurrentHealth, gameState.MaxPlayerHealth, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
+	//after all destroyed eleements are removed
 	utilJanitor();
+
+	//
+	enemyController.moveEnemies();
+
 	//display
 	//dismount
 	Play::PresentDrawingBuffer();

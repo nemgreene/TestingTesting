@@ -6,7 +6,7 @@
 
 
 Gun::Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager) {
-	_bulletSpeed = 1.0f;
+	_bulletSpeed = 5.0f;
 	_bulletType = bulletType;
 	_spriteName = spriteName;
 	_spriteManager = spriteManager;

@@ -10,5 +10,5 @@ public:
 	void moveBullets();
 	
 private:
-
+	float _bulletSpeed = 2;
 };
