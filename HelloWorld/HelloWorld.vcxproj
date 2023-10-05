@@ -191,6 +191,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ChickenGun.cpp" />
+    <ClCompile Include="EnemyController.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="MainGame.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -207,6 +208,7 @@
   <ItemGroup>
     <ClInclude Include="..\Play.h" />
     <ClInclude Include="ChickenGun.h" />
+    <ClInclude Include="EnemyController.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="HandleInputs.h" />
     <ClInclude Include="Map.h" />
