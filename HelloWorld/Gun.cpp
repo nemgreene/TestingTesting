@@ -1,11 +1,8 @@
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Gun.h"
 #include <string>
-#include "Maths.h"
-#include "Play.h"
-#include "Utilities.h"
-#include "SpriteManager.h"
-#include "Map.h"
+
+
 
 
 Gun::Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* spriteManager) {
@@ -19,7 +16,7 @@ Gun::Gun(enum GameObjectType bulletType, std::string spriteName, SpriteManager* 
 void Gun::spawnBullet(Vec2 vOrigin, Vec2 vDir)
 {
 	//create bullet objec
-	int iBullet = Play::CreateGameObject(TYPE_BULLET_PRIMARY, Point2D(vOrigin.GetX(), vOrigin.GetY()), 50, _spriteName.c_str());
+	int iBullet = Play::CreateGameObject(GetGameObjectType(), Point2D(vOrigin.GetX(), vOrigin.GetY()), 50, _spriteName.c_str());
 	GameObject& bulletSpawned = Play::GetGameObject(iBullet);
 	bulletSpawned.velocity = { vDir.GetX(),vDir.GetY(), };
 	bulletSpawned.rotation = vDir.rad();
@@ -46,7 +43,7 @@ void Gun::moveBullets()
 		}
 		for (int id : vEnemyIds)
 		{
-			//get enemy game objecvt
+			//get enemy game object
 			GameObject& enemy = Play::GetGameObject(id);
 			if (Play::IsColliding(bullet, enemy))
 			{
@@ -57,4 +54,39 @@ void Gun::moveBullets()
 			}
 		}
 	}
+}
+
+GameObjectType Gun::GetGameObjectType()
+{
+	return _bulletType;
+}
+
+void Gun::SetGameObjectType(GameObjectType _newType)
+{
+	_bulletType = _newType;
+}
+
+float Gun::GetBulletSpeed()
+{
+	return _bulletSpeed;
+}
+
+void Gun::SetBulletSpeed(float speed)
+{
+	_bulletSpeed = speed;
+}
+
+std::string Gun::GetSpriteName()
+{
+	return _spriteName;
+}
+
+void Gun::SetSpriteName(std::string NewName)
+{
+	_spriteName = NewName;
+}
+
+SpriteManager* Gun::GetSpriteManager()
+{
+	return _spriteManager;
 }

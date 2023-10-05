@@ -9,7 +9,7 @@
 Vec2 utilHandleCursorDirection(Vec2 vec1, Vec2 vec2) {
 	//returns degrees to rotate sprites and vector to send bullet along
 	Vec2 vecDir = vec2 - vec1;
-	float vecDirMag = vecDir.mag(vecDir);
+	float vecDirMag = mag(vecDir);
 	Vec2 vUnitVec{ vecDir.GetX() / vecDirMag, vecDir.GetY() / vecDirMag };
 	return vUnitVec;
 };
