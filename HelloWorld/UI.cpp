@@ -3,27 +3,27 @@
 #include "Play.h"
 
 
-void handleUI(int _playerHealth, int DISPLAY_WIDTH, int DISPLAY_HEIGHT)
+void handleUI(int _playerHealth, int _playerMaxHealth, int DISPLAY_WIDTH, int DISPLAY_HEIGHT)
 {
 	//load all the sprites
 	//load in player health
 	//if statement about the ammount of health
-	float HealthD = (_playerHealth - 75.f) / 25.f;
+	float HealthD = (_playerHealth - 0.75*_playerMaxHealth) / (0.25*_playerMaxHealth);
 	if (HealthD < 0)
 		HealthD = 0;
 	if (HealthD > 1)
 		HealthD = 1;
-	float HealthC = (_playerHealth - 50.f) / 25.f;
+	float HealthC = (_playerHealth - 0.5 * _playerMaxHealth) / (0.25 * _playerMaxHealth);
 	if (HealthC < 0)
 		HealthC = 0;
 	if (HealthC > 1)
 		HealthC = 1;
-	float HealthB = (_playerHealth - 25.f) / 25.f;
+	float HealthB = (_playerHealth - 0.25 * _playerMaxHealth) / (0.25 * _playerMaxHealth);
 	if (HealthB < 0)
 		HealthB = 0;
 	if (HealthB > 1)
 		HealthB = 1;
-	float HealthA = (_playerHealth - 0.f ) / 25.f;
+	float HealthA = (_playerHealth - 0.f ) / (0.25 * _playerMaxHealth);
 	if (HealthA < 0)
 		HealthA = 0;
 	if (HealthA > 1)
