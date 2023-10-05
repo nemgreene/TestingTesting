@@ -26,6 +26,8 @@ enum GameStateType
 
 struct GameState {
 	int score = 0;
+	int MaxPlayerHealth = 100;
+	int PlayerCurrentHealth = 100;
 	GameStateType currentGameState = STATE_MENU;
 };
 
@@ -114,7 +116,7 @@ bool MainGameUpdate( float elapsedTime )
 	secondaryGun.moveBullets();
 
 	//Ui sprite render
-	handleUI(60, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+	handleUI(gameState.PlayerCurrentHealth, gameState.MaxPlayerHealth, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
 	utilJanitor();
 	//display
