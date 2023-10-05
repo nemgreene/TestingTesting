@@ -190,6 +190,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChickenGun.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="MainGame.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -199,17 +200,20 @@
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="TennisGun.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Play.h" />
+    <ClInclude Include="ChickenGun.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="HandleInputs.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="TennisGun.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>

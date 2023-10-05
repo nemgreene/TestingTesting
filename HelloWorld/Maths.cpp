@@ -42,13 +42,6 @@ Vec2 Vec2::operator*(const float other) //multiplying vector by a const.
 	return Vec2(this->x * other, this->y * other);
 }
 
-float Vec2::mag(Vec2 _Vector) //returns the length of the vector
-{
-	float X = _Vector.GetX();
-	float Y = _Vector.GetY();
-	return (float)sqrt(X * X + Y * Y);
-}
-
 float Vec2::rad()
 {
 	float rotation = atan2(y, x);
@@ -89,4 +82,11 @@ void Vec2::SetY(float _y)
 std::ostream& operator<<(std::ostream& os, const Vec2& point) {
 	os << point.x << ", " << point.y;
 	return os;
+}
+
+float mag(Vec2 _Vector) //returns the length of the vector
+{
+	float X = _Vector.GetX();
+	float Y = _Vector.GetY();
+	return (float)sqrt(X * X + Y * Y);
 }

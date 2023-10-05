@@ -9,6 +9,7 @@
 #include "Gun.h"
 #include "UI.h"
 #include "Map.h"
+#include "ChickenGun.h"
 
 
 int DISPLAY_WIDTH = 1023;//38 tiles across
@@ -44,8 +45,8 @@ void HandleEnemyMovement();
 
 SpriteManager spriteManager = SpriteManager();
 
-Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2", &spriteManager);
-
+ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
+Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
 
 
 
@@ -57,7 +58,8 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::LoadBackground("Data\\Backgrounds\\testing_background.png");
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
-	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "lava_gun");
+	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "Chicken_Gun");
+	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "lava_gun");
 	int iRobit = Play::CreateGameObject(TYPE_ENEMY, { 350, 350 }, 50, "robit");
 
 	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
@@ -89,7 +91,7 @@ bool MainGameUpdate( float elapsedTime )
 	utilDebugString("The mouse is colliding: " + std::to_string(MaxsCollisionChecker({player.pos.x,player.pos.y}, simpleCollisionMap)), 400, 400);
 	//catch user inputs
 
-	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun);
+	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun, &secondaryGun);
 
 	HandlePlayerMovement();
 	//tick all sprites
@@ -97,6 +99,7 @@ bool MainGameUpdate( float elapsedTime )
 
 	//tick all bullets
 	primaryGun.moveBullets();
+	secondaryGun.moveBullets();
 
 	//Ui sprite render
 	handleUI(60, DISPLAY_WIDTH, DISPLAY_HEIGHT);

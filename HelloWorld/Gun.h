@@ -4,6 +4,9 @@
 #include "Maths.h"
 #include "Play.h"
 #include "SpriteManager.h"
+#include "Map.h"
+#include "Utilities.h"
+
 class Gun
 {
 public:
@@ -17,13 +20,20 @@ public:
 	//move them along their own own vector
 	//run every tick
 	void moveBullets();
+
+	enum GameObjectType GetGameObjectType();
+	void SetGameObjectType(GameObjectType _newType);
+	float GetBulletSpeed();
+	void SetBulletSpeed(float speed);
+	std::string GetSpriteName();
+	void SetSpriteName(std::string NewName);
+	SpriteManager* GetSpriteManager();
+
 private:
-	//ids of all spawend bullets child to this gun
+	//ids of all spawned bullets child to this gun
 	enum GameObjectType _bulletType;
 	float _bulletSpeed;
 	std::string _spriteName;
 	SpriteManager* _spriteManager;
-
-
 };
 
