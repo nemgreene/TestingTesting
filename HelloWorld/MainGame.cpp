@@ -10,15 +10,25 @@
 #include "UI.h"
 #include "Map.h"
 
-
-int DISPLAY_WIDTH = 1023;//38 tiles across
-int DISPLAY_HEIGHT = 924;//21 tiles across
+int DISPLAY_WIDTH = 1254;//38 tiles across
+int DISPLAY_HEIGHT = 693;//21 tiles across
 int DISPLAY_SCALE = 1;
 
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
 
+enum GameStateType 
+{
+	STATE_MENU,
+	STATE_PLAY,
+	STATE_GAMEOVER,
+};
 
+struct GameState {
+	int score = 0;
+	GameStateType currentGameState = STATE_MENU;
+};
 
+GameState gameState;
 
 #pragma region NeedsWork
 
@@ -34,20 +44,15 @@ void HandleInputs() {
 	//reload, handle perfect reload
 };
 
-
 void HandleEnemyMovement();
 // random movement pattern
 // VV
 //a* pathfinding, raytracing
 #pragma endregion
 
-
 SpriteManager spriteManager = SpriteManager();
 
 Gun primaryGun = Gun::Gun(TYPE_BULLET_PRIMARY, "laser_2", &spriteManager);
-
-
-
 
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
@@ -71,7 +76,6 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	};
 
 	spriteManager.initializeSprites(vInitializeSpriteMap);
-
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -115,3 +119,24 @@ int MainGameExit( void )
 	return PLAY_OK;
 }
 
+void UpdateGameState()
+{
+	switch (gameState.currentGameState)
+	{
+		case STATE_MENU:
+			// display title
+			// display controls
+			// "PRESS SPACE TO START"
+		break;
+
+		case STATE_PLAY:
+			// current build
+		break;
+
+		case STATE_GAMEOVER:
+			// display "GAME OVER"
+			// display score
+			// "PRESS SPACE TO RESTART"
+		break;
+	}
+}
