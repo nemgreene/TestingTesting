@@ -88,27 +88,9 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 
-	Play::Colour c = { 0,30,90 };
-	Play::ClearDrawingBuffer(c);
 
+	Play::DrawBackground();
 
-	if (gameState.currentGameState == STATE_MENU)
-	{
-		utilDebugString("MENU", 300, 10);
-		//draw the backgroung
-		//idle fry
-		//listen for space keydown
-
-		Play::PresentDrawingBuffer();
-
-
-		/*if space*/
-		//{
-		// change game state
-		//}
-		return Play::KeyDown(VK_ESCAPE);
-
-	}
 
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	//Play::ClearDrawingBuffer( Play::cOrange );
@@ -137,8 +119,8 @@ bool MainGameUpdate( float elapsedTime )
 	utilJanitor();
 	//display
 	//dismount
-	return Play::KeyDown( VK_ESCAPE );
 	Play::PresentDrawingBuffer();
+	return Play::KeyDown( VK_ESCAPE );
 }
 
 // Gets called once when the player quits the game 
