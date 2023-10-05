@@ -106,7 +106,7 @@ bool MainGameUpdate( float elapsedTime )
 	enemyController.moveEnemies();
 
 
-	primaryGun.moveBullets(&enemyController._enemies);
+	primaryGun.moveBullets(enemyController.getEnemies());
 
 	//display
 	Play::PresentDrawingBuffer();
