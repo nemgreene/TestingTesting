@@ -53,7 +53,6 @@ void HandleEnemyMovement();
 
 SpriteManager spriteManager = SpriteManager();
 
-
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
 Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
 
@@ -88,9 +87,31 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
+
+	Play::Colour c = { 0,30,90 };
+	Play::ClearDrawingBuffer(c);
+
+
+	if (gameState.currentGameState == STATE_MENU)
+	{
+		utilDebugString("MENU", 300, 10);
+		//draw the backgroung
+		//idle fry
+		//listen for space keydown
+
+		Play::PresentDrawingBuffer();
+
+
+		/*if space*/
+		//{
+		// change game state
+		//}
+		return Play::KeyDown(VK_ESCAPE);
+
+	}
+
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	//Play::ClearDrawingBuffer( Play::cOrange );
-	Play::DrawBackground();
 	//get mouse position
 	Vec2 vMousePos = Play::GetMousePos();
 	//calculate aim vector
@@ -104,7 +125,7 @@ bool MainGameUpdate( float elapsedTime )
 
 	HandlePlayerMovement();
 	//tick all sprites
-	spriteManager.tickSprites(vMousePos, vAimVec.rad());
+	spriteManager.tickSprites(vMousePos, vAimVec.rad(), elapsedTime);
 
 	//tick all bullets
 	primaryGun.moveBullets();
@@ -115,9 +136,9 @@ bool MainGameUpdate( float elapsedTime )
 
 	utilJanitor();
 	//display
-	Play::PresentDrawingBuffer();
 	//dismount
 	return Play::KeyDown( VK_ESCAPE );
+	Play::PresentDrawingBuffer();
 }
 
 // Gets called once when the player quits the game 
@@ -128,6 +149,16 @@ int MainGameExit( void )
 }
 
 void UpdateGameState()
+
+// STATEMENU
+//std::string print
+
+//if(state_menu)
+//{
+//	pritn = "Menu"
+//}
+
+
 {
 	switch (gameState.currentGameState)
 	{

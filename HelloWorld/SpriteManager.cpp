@@ -172,23 +172,23 @@ void SpriteManager::tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime)
 	//
 };
 
-void SpriteManager::chainAnimation(int id, std::string newSprite, int duration, void (*callback)() = [] {return;})
-{
-	Vec2 targCoords = SpriteManager::_findSpriteCoords(id);
-	if (targCoords.GetX() == -1)
-	{
-		callback();
-		return;
-	}
-	SpriteManager::changeSprites(id, newSprite);
-	_ChainedObj insert = { id, duration, newSprite };
-
-	SpriteManager::_chainedCache.push_back(insert);
-	SpriteManager::_chainedIds.push_back(id);
-	callback();
-
-
-}
+//void SpriteManager::chainAnimation(int id, std::string newSprite, int duration, void (*callback)() = [] {return;})
+//{
+//	Vec2 targCoords = SpriteManager::_findSpriteCoords(id);
+//	if (targCoords.GetX() == -1)
+//	{
+//		callback();
+//		return;
+//	}
+//	SpriteManager::changeSprites(id, newSprite);
+//	_ChainedObj insert = { id, duration, newSprite };
+//
+//	SpriteManager::_chainedCache.push_back(insert);
+//	SpriteManager::_chainedIds.push_back(id);
+//	callback();
+//
+//
+//}
 
 void SpriteManager::_continueChain(int id)
 {

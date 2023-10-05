@@ -24,7 +24,7 @@ private:
 
 
 	std::vector<std::map<int, std::string>> _spriteCache;
-	std::vector<_ChainedObj> _chainedCache;
+	//std::vector<_ChainedObj> _chainedCache;
 	std::vector<int> _chainedIds;
 	std::map<int, std::string> _rotationCache;
 	void _checkPlayerSprite(Vec2 vMousePos, float fAimVec);
@@ -47,7 +47,7 @@ public:
 	void deleteSprites(int id);
 
 	//chain animations, 
-	void chainAnimation(int id, std::string newSprite, int duration, void (*callback)());
+	//void chainAnimation(int id, std::string newSprite, int duration, void (*callback)());
 	//Run every tick to animate all the sprites IN _SPRITECACHE
 	void tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime);
 };

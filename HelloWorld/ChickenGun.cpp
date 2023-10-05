@@ -61,9 +61,11 @@ void ChickenGun::moveBullets()
 		if (bullet.velocity.x >= 0)
 		{
 			//sprite facing right
+			bullet.spriteScale = { 1,1 };
 		}
 		else
 		{
+			bullet.spriteScale = { -1,1 };
 			//sprite facing left
 		}
 	}
