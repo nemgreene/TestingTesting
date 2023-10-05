@@ -3,6 +3,7 @@
 #include <string>
 #include "Maths.h"
 #include "Play.h"
+#include "Utilities.h"
 
 
 struct _ChainedObj;

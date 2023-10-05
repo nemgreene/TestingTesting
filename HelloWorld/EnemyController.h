@@ -1,5 +1,4 @@
 #pragma once
-#include "EnemyController.h"
 #include "Enemy.h"
 #include "SpriteManager.h"
 #include "EnemySchema.h"
@@ -8,17 +7,19 @@
 class EnemyController
 {
 private:
-	std::map<int, EnemySchema> _constructorSchema;
+
 	SpriteManager* _spriteManager;
 
 public:
-	std::vector<Enemy*> enemies;
+	std::vector<Enemy*> _enemies;
 
 	EnemyController();
 
-	EnemyController(std::map<int, EnemySchema> constructorSchema, SpriteManager* spriteManager);
+	EnemyController( SpriteManager* spriteManager);
 
-	void spawnEnemies();
+	void spawnEnemies(std::map<int, EnemySchema> constructorSchema);
 	void moveEnemies();
+	std::vector<Enemy*>* getEnemies();
+
 
 };

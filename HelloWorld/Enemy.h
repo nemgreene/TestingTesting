@@ -3,6 +3,7 @@
 #include <string>
 #include "Maths.h"
 #include "SpriteManager.h"
+#include "Utilities.h"
 #include "Gun.h"
 
 class Enemy
@@ -11,12 +12,13 @@ private:
 	float _speed;
 	int _health;
 	SpriteManager* _spriteManager;
-	Gun* _equippedGun = nullptr;
 	int _iEnemyId;
 	//bullet frequency set
 	float _frequency;
 
+
 public:
+	Gun* _equippedGun;
 
 	float _spawnTime;
 
@@ -29,6 +31,8 @@ public:
 	void takeDamage(int damage);
 	void destruct();
 	void fireGun();
+	void incrementSpawn();
+
 
 };
 

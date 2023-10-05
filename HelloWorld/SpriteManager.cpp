@@ -1,10 +1,14 @@
 #pragma once
 #include "SpriteManager.h"
 
+
 void utilDebugString(std::string debugMessage, int x, int y);
 
 
 SpriteManager::SpriteManager() {};
+
+
+
 
 void SpriteManager::_checkPlayerSprite(Vec2 vMousePos, float fAimVec)
 {
@@ -95,7 +99,7 @@ void SpriteManager::addSprite(int id, std::string spriteName, int layerIndex)
 // 
 //chain animations together, with callback
 
-//Move a sprite id to a different render layer
+//Move a sprite id to a dWifferent render layer
 void SpriteManager::updateSpriteOrder(std::vector < std::vector<int>> sprites) {
 
 	for (std::vector<int> spriteIdentifier : sprites)
@@ -125,14 +129,26 @@ void SpriteManager::deleteSprites(int id)
 void SpriteManager::tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime)
 {
 	SpriteManager::_deltaTime = deltaTime;
-	SpriteManager::_checkPlayerSprite(vMousePos, fAimVec);
+	//SpriteManager::_checkPlayerSprite(vMousePos, fAimVec);
+	//SpriteManager::chainAnimation(0, "fry_rolling_down_9", 9, [] {return;});
 
 	for (std::map<int, std::string> layer : SpriteManager::_spriteCache)
 	{
 		for (auto const& x : layer)
 		{
+			//if sprite is chained, continue its animation
+			//if (std::find(SpriteManager::_chainedIds.begin(), SpriteManager::_chainedIds.end(), x.first) != SpriteManager::_chainedIds.end())
+			//{
+			//	SpriteManager::_continueChain(x.first);
+			//	continue;
+			//}
+			//else update normally
 			GameObject& obj = Play::GetGameObject(x.first);
-			const char* spriteName = x.second.c_str();
+			std::string newSprite = x.second;
+
+			//c_str
+			const char* spriteName = newSprite.c_str();
+
 			Play::SetSprite(obj, spriteName, 0.2f);
 			Play::UpdateGameObject(obj);
 			//Drawing types have differenet computational demand
@@ -154,5 +170,63 @@ void SpriteManager::tickSprites(Vec2 vMousePos, float fAimVec, float deltaTime)
 	//check player sprites
 	//check enemy sprites
 	//
+};
+
+void SpriteManager::chainAnimation(int id, std::string newSprite, int duration, void (*callback)() = [] {return;})
+{
+	Vec2 targCoords = SpriteManager::_findSpriteCoords(id);
+	if (targCoords.GetX() == -1)
+	{
+		callback();
+		return;
+	}
+	SpriteManager::changeSprites(id, newSprite);
+	_ChainedObj insert = { id, duration, newSprite };
+
+	SpriteManager::_chainedCache.push_back(insert);
+	SpriteManager::_chainedIds.push_back(id);
+	callback();
+
+
 }
-;
+
+void SpriteManager::_continueChain(int id)
+{
+	Vec2 targCoords = _findSpriteCoords(id);
+	std::string currentSprite= SpriteManager::_spriteCache[targCoords.GetY()][targCoords.GetX()];
+	
+
+	//clever logic to run the sprite to the end of the chain, then reset it after
+	// draw the sprite
+	// tic down duration
+	// if duration == 0
+	// remove from caches
+	// return to render loop
+	// 
+	//SpriteManager::_chainedCache[id].duration--;
+
+
+	//GameObject& obj = Play::GetGameObject(id);
+
+	//const char* spriteName = currentSprite.c_str();
+	//Play::SetSprite(obj, spriteName, 0.2f);
+	//Play::UpdateGameObject(obj);
+	////Drawing types have differenet computational demand
+	////highest demand
+	//if (obj.spriteScale.x != 0 || obj.spriteScale.y != 0)
+	//{
+	//	Play::DrawObjectRotatedScaled(obj, { obj.spriteScale.x, obj.spriteScale.y });
+	//}
+	//else if (obj.rotation != 0)
+	//{
+	//	Play::DrawObjectRotated(obj);
+	//}
+	//else {
+	//	Play::DrawObject(obj);
+	//};
+	//if(SpriteManager::_chainedCache[id].duration = < 0)
+	//{
+	//	return
+	//}
+
+};

@@ -2,11 +2,13 @@
 #include "Play.h"
 #include "Maths.h"
 
+
+
 // Accepts 2 position vectors, and calculates the directional vector from vec1 to vec 2
 // Arguments:
 // Vec2 vec1: origin vector
 // Vec2 vec2: target vector
-Vec2 utilHandleCursorDirection(Vec2 vec1, Vec2 vec2) ;
+Vec2 utilHandleCursorDirection(Vec2 vec1, Vec2 vec2);
 
 //Pass a string to print out to the debug console
 //Arguments:
@@ -14,7 +16,7 @@ Vec2 utilHandleCursorDirection(Vec2 vec1, Vec2 vec2) ;
 //int x: x coord of debug message
 //int y: y coord of debug message
 
-	void utilDebugString(std::string debugMessage, int x, int y);
+void utilDebugString(std::string debugMessage, int x, int y);
 
 void utilJanitor();
 
@@ -27,11 +29,12 @@ enum GameObjectType
 	TYPE_DESTROYED
 };
 
-struct EnemySchema {
-	Gun gun;
-	std::string sprite;
-	int health;
+struct _ChainedObj
+{
+	int id;
+	int duration;
+	std::string spriteName;
+
 };
 
 
-#endif

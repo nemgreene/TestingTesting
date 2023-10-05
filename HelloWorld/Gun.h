@@ -5,6 +5,13 @@
 #include "SpriteManager.h"
 #include "Utilities.h"
 
+class Enemy;
+
+
+//class EnemyHandler;
+
+
+
 class Gun
 {
 public:
@@ -19,13 +26,13 @@ public:
 	//iterate over all children bullets
 	//move them along their own own vector
 	//run every tick
-	void moveBullets();
-private:
-	//ids of all spawend bullets child to this gun
+	void moveBullets(std::vector<Enemy*>* enemies);
 	GameObjectType _bulletType = GameObjectType::TYPE_PLAYER;
 	float _bulletSpeed;
 	std::string _spriteName;
 	SpriteManager* _spriteManager;
+private:
+	//ids of all spawend bullets child to this gun
 
 
 };
