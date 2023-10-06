@@ -28,10 +28,10 @@ private:
 	std::vector<int> _chainedIds;
 	std::map<int, std::string> _rotationCache;
 	void _checkPlayerSprite(Vec2 vMousePos, float fAimVec);
-	Vec2 _findSpriteCoords(int id);
 	void _continueChain(int id);
 
 public:
+	Vec2 _findSpriteCoords(int id);
 	SpriteManager();
 	float _deltaTime;
 	//load all sprites into cache, build layers, iterate over them, draw them in order 
