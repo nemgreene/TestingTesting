@@ -49,7 +49,7 @@ void HandlePlayerMovement(float _elapsedTime)
 		player.Dashing = false;
 		player.Timer += _elapsedTime;
 	}
-	if (player.Timer >= 4)
+	if (player.Timer >= 3)
 	{
 		player.Timer = 0;
 	}

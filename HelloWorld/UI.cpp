@@ -31,7 +31,7 @@ void handleUI(int _playerHealth, int _playerMaxHealth, int DISPLAY_WIDTH, int DI
 	// Calculating Dash transparency
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	float DashTimer = player.Timer;
-	float DashUI = (DashTimer - 0.5) / 3.5;
+	float DashUI = (DashTimer - 0.5) / 2.5;
 	if (player.Timer == 0)
 	{
 		DashUI = 1.f;
