@@ -147,8 +147,9 @@ bool MainGameUpdate( float elapsedTime )
 	Vec2 vAimVec = utilHandleCursorDirection({ player.pos.x,player.pos.y }, vMousePos);
 
 
+
 	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun, &secondaryGun);
-	HandlePlayerMovement();
+	HandlePlayerMovement(elapsedTime);
 
 
 	//tick all bullets
