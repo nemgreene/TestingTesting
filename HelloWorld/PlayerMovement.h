@@ -5,4 +5,4 @@
 #include "Play.h"
 #include "Gun.h"
 #include "Utilities.h"
-void HandlePlayerMovement();
+void HandlePlayerMovement(float _elapsedTime);

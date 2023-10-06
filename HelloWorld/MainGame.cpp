@@ -106,11 +106,11 @@ bool MainGameUpdate( float elapsedTime )
 	Vec2 vAimVec = utilHandleCursorDirection({ player.pos.x,player.pos.y }, vMousePos);
 
 
-	utilDebugString("The mouse is colliding: " + std::to_string(MaxsCollisionChecker({player.pos.x,player.pos.y}, simpleCollisionMap)), 400, 400);
+	utilDebugString("The mouse is colliding: " + std::to_string(MaxsCollisionChecker({player.pos}, simpleCollisionMap)), 400, 400);
 	//catch user inputs
 
 	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun, &secondaryGun);
-	HandlePlayerMovement();
+	HandlePlayerMovement(elapsedTime);
 
 	//tick all sprites
 

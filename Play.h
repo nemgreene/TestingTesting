@@ -1504,6 +1504,8 @@ struct GameObject
 	int radius{ 0 };
 	float scale{ 1 };
 	int lastFrameUpdated{ -1 };
+	float Timer{0.f};
+	bool Dashing{ false };
 
 	// Add your own data members here if you want to
 	PLAY_ADD_GAMEOBJECT_MEMBERS
