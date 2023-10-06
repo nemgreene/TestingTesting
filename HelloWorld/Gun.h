@@ -19,7 +19,7 @@ public:
 	//iterate over all children bullets
 	//move them along their own own vector
 	//run every tick
-	void moveBullets();
+	void moveBullets(float _elapsedTime);
 
 	enum GameObjectType GetGameObjectType();
 	void SetGameObjectType(GameObjectType _newType);
@@ -28,6 +28,12 @@ public:
 	std::string GetSpriteName();
 	void SetSpriteName(std::string NewName);
 	SpriteManager* GetSpriteManager();
+	float getCooldown();
+	void setCooldown(float newCooldown);
+	float getTimer();
+	void setTimer(float newtime);
+	bool getFiredGun();
+	void setFiredGun(bool fired);
 
 private:
 	//ids of all spawned bullets child to this gun
@@ -35,5 +41,8 @@ private:
 	float _bulletSpeed;
 	std::string _spriteName;
 	SpriteManager* _spriteManager;
+	float _gunCooldown = 0.4;
+	float _timer = 0;
+	bool firedGun = false;
 };
 
