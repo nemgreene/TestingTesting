@@ -38,6 +38,7 @@ enum GameObjectType
 enum GameStateType {
 	STATE_MENU,
 	STATE_PLAY,
+	STATE_LEVEL_CLEARED,
 	STATE_GAMEOVER,
 };
 
