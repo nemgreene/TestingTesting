@@ -45,7 +45,7 @@ SpriteManager spriteManager = SpriteManager();
 EnemyController enemyController = EnemyController(&spriteManager, &gameState);
 
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
-Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
+Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "acid_bullets_4", &spriteManager);
 
 
 
@@ -97,6 +97,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
+	gameState.currentGameState = STATE_LEVEL_CLEARED;
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	//gameState.currentGameState = STATE_PLAY;
 	if (gameState.currentGameState == STATE_MENU)
