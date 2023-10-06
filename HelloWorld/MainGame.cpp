@@ -1,15 +1,16 @@
 #define PLAY_IMPLEMENTATION
 #define PLAY_USING_GAMEOBJECT_MANAGER
-#include "Play.h"
-#include "Maths.h"
-#include "SpriteManager.h"
-#include "Utilities.h"
-#include "HandleInputs.h"
-#include "PlayerMovement.h"
-#include "Gun.h"
+
 #include "UI.h"
 #include "Map.h"
+#include "Gun.h"
+#include "Play.h"
+#include "Maths.h"
+#include "Utilities.h"
 #include "ChickenGun.h"
+#include "HandleInputs.h"
+#include "SpriteManager.h"
+#include "PlayerMovement.h"
 #include "EnemyController.h"
 
 int DISPLAY_WIDTH = 1254;//38 tiles across
@@ -17,9 +18,6 @@ int DISPLAY_HEIGHT = 693;//21 tiles across
 int DISPLAY_SCALE = 1;
 
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
-
-
-
 
 GameState gameState;
 
@@ -49,6 +47,7 @@ EnemyController enemyController = EnemyController(&spriteManager, &gameState);
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
 Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
 
+void PlayMusic();
 
 
 
@@ -61,8 +60,13 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 20, "fry");
 	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "Chicken_Gun");
-	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "lava_gun");
 
+	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "shotgun");
+
+	Point2D secondaryOrigin = Play::GetSpriteOrigin(iGunSecondary);
+
+	Play::MoveSpriteOrigin("shotgun", Play::GetSpriteWidth(Play::GetSpriteId("shotgun"))/-4, 0);
+	Play::UpdateGameObject(Play::GetGameObject(iGunSecondary));
 
 
 	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
@@ -71,7 +75,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 		{},									 //Enemies       2
 		{},                                  //enemies guns  3
 		{{iPlayer, "fry_ruinning_down_6"} }, //Char          4
-		{{iGunPrimary, "lava_gun_1"}},       //Guns          5
+		{{iGunSecondary, "shotgun"}},       //Guns          5
 		{}									 //foreground    6
 	};
 
@@ -87,32 +91,59 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	/*
 	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");*/
 
+
 	enemyController.playerId = iPlayer;
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
+	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
+
+	if (gameState.currentGameState == STATE_MENU)
+	{
+		// draws background
+		Play::DrawBackground();
+		// draws title
+		Play::DrawFontText("132px", "TESTING",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 140 }, Play::CENTRE);
+		Play::DrawFontText("64px", "2",
+			{ DISPLAY_WIDTH / 2 + 105, DISPLAY_HEIGHT / 2 - 180 }, Play::CENTRE);
+		// draws controls
+		Play::DrawFontText("64px", "WASD TO MOVE, MOUSE TO AIM, MOUSE CLICK TO SHOOT!",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f }, Play::CENTRE);
+		Play::DrawFontText("64px", "PRESS SPACE TO START",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
+
+		//idle fry
+		Play::SetSprite(player, "phillip_idle_2q_4", 0.2f);
+		Play::UpdateGameObject(player);
+		Play::DrawObject(player);
+		Play::PresentDrawingBuffer();
+		if (Play::KeyPressed(VK_SPACE) == true)
+		{
+			gameState.currentGameState = STATE_PLAY;
+			PlayMusic();
+		}
+		return Play::KeyDown(VK_ESCAPE);
+	}
+
+
 
 
 	Play::DrawBackground();
 
 
-	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
-	//Play::ClearDrawingBuffer( Play::cOrange );
+	GameObject& secondaryGunObj = Play::GetGameObjectByType(TYPE_GUN_SECONDARY);
+
 	//get mouse position
 	Vec2 vMousePos = Play::GetMousePos();
 	//calculate aim vector
 	Vec2 vAimVec = utilHandleCursorDirection({ player.pos.x,player.pos.y }, vMousePos);
 
-
-	utilDebugString("The mouse is colliding: " + std::to_string(MaxsCollisionChecker({player.pos}, simpleCollisionMap)), 400, 400);
-	//catch user inputs
-
 	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun, &secondaryGun);
 	HandlePlayerMovement(elapsedTime);
 
-	//tick all sprites
 
 	//tick all bullets
 	primaryGun.moveBullets();
@@ -142,6 +173,26 @@ int MainGameExit( void )
 	Play::DestroyManager();
 	return PLAY_OK;
 }
+
+void PlayMusic()
+{
+	int randomRoll = (std::rand() % 3) + 1;
+
+	if (randomRoll == 1)
+	{
+		Play::StartAudioLoop("science_action_01_loop");
+	}
+	else if (randomRoll == 2)
+	{
+		Play::StartAudioLoop("science_action_02_loop");
+	}
+	else if (randomRoll == 3)
+	{
+		Play::StartAudioLoop("science_action_04_loop");
+	}
+}
+
+
 
 void UpdateGameState()
 

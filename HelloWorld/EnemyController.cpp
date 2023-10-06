@@ -28,17 +28,17 @@ void EnemyController::fireGun(int id) {
 
 	Vec2 vBullet = utilHandleCursorDirection(Vec2(enemy.pos), Vec2(player.pos));
 
-	int iBullet = Play::CreateGameObject(TYPE_BULLET_ENEMY, enemy.pos, 11, "acid");
+	int iBullet = Play::CreateGameObject(TYPE_BULLET_ENEMY, enemy.pos, 11, "tenni_ball_bullets_4");
 	GameObject& bulletSpawned = Play::GetGameObject(iBullet);
 
 	bulletSpawned.velocity = { vBullet.GetX() * 2,vBullet.GetY() * 2, };
 	//bulletSpawned.rotation = vBullet.rad();
 
-	Play::SetSprite(bulletSpawned, "acid_bullets_4", 0.2f);
+	Play::SetSprite(bulletSpawned, "tenni_ball_bullets_4", 0.2f);
 	Play::UpdateGameObject(bulletSpawned);
 
 	////pass to sprite manager to track drawing
-	_spriteManager->addSprite(iBullet,"acid_bullets_4", 1);
+	_spriteManager->addSprite(iBullet,"tenni_ball_bullets_4", 1);
 	return;
 }
 
@@ -112,6 +112,3 @@ void EnemyController::checkPlayerCollisions()
 		}
 	}
 }
-
-
-
