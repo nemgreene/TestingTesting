@@ -56,6 +56,7 @@ void Gun::moveBullets()
 			GameObject& enemy = Play::GetGameObject(id);
 			if (Play::IsColliding(bullet, enemy))
 			{
+				Play::PlayAudio("robit_break_01");
 				enemy.type = TYPE_DESTROYED;
 				bullet.type = TYPE_DESTROYED;
 				Play::UpdateGameObject(bullet);

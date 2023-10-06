@@ -20,7 +20,7 @@ int DISPLAY_SCALE = 1;
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
 
 GameState gameState;
-
+void PlayMusic();
 #pragma region NeedsWork
 
 //Detect map collisions one way or another to make sure nobody walks/flies through walls
@@ -47,7 +47,6 @@ EnemyController enemyController = EnemyController(&spriteManager, &gameState);
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
 Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
 
-void PlayMusic();
 
 
 
@@ -99,7 +98,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
-
+	//gameState.currentGameState = STATE_PLAY;
 	if (gameState.currentGameState == STATE_MENU)
 	{
 		// draws background
@@ -116,7 +115,7 @@ bool MainGameUpdate( float elapsedTime )
 			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
 
 		//idle fry
-		Play::SetSprite(player, "phillip_idle_2q_4", 0.2f);
+		Play::SetSprite(player, "fry_idle_2q_4", 0.2f);
 		Play::UpdateGameObject(player);
 		Play::DrawObject(player);
 		Play::PresentDrawingBuffer();
@@ -128,6 +127,12 @@ bool MainGameUpdate( float elapsedTime )
 		return Play::KeyDown(VK_ESCAPE);
 	}
 
+	if (gameState.currentGameState == STATE_LEVEL_CLEARED)
+	{
+		Play::DrawFontText("64px", "PRESS SPACE TO START",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
+		return Play::KeyDown(VK_ESCAPE);
+	}
 
 
 
