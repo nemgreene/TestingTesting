@@ -31,6 +31,7 @@ void utilJanitor() {
 	for (int id : trash)
 	{
 		Play::DestroyGameObjectsByType(TYPE_DESTROYED);
+
 	};
 
 }

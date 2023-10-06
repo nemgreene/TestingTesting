@@ -91,11 +91,24 @@ void EnemyController::checkPlayerCollisions()
 	for (int iBullet : bullets)
 	{
 		GameObject& bullet = Play::GetGameObject(iBullet);
-		bool colliding = Play::IsColliding(player, bullet);
-		if (colliding)
+		bool pCol = Play::IsColliding(player, bullet);
+		bool wCol = MaxsCollisionChecker({ bullet.pos.x , bullet.pos.y }, simpleCollisionMap);
+
+		if (wCol)
+		{
+			bullet.type = TYPE_DESTROYED;
+			Play::UpdateGameObject(bullet);
+			_spriteManager->deleteSprites(iBullet);
+			continue;
+
+		}
+		if (pCol)
 		{
 			bullet.type = TYPE_DESTROYED;
 			_gameState->PlayerCurrentHealth = _gameState->PlayerCurrentHealth - 10;
+			Play::UpdateGameObject(bullet);
+			_spriteManager->deleteSprites(iBullet);
+			continue;
 		}
 	}
 }
