@@ -45,7 +45,7 @@ SpriteManager spriteManager = SpriteManager();
 EnemyController enemyController = EnemyController(&spriteManager, &gameState);
 
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
-Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
+Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "acid_bullets_4", &spriteManager);
 
 
 
@@ -93,12 +93,19 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 	enemyController.playerId = iPlayer;
 }
-
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	//gameState.currentGameState = STATE_PLAY;
+
+	if (enemyController._enemyIds.size() < 1) {
+		gameState.currentGameState = STATE_LEVEL_CLEARED;
+	}
+	if (gameState.PlayerCurrentHealth < 1)
+	{
+		gameState.currentGameState = STATE_GAMEOVER;
+	}
 	if (gameState.currentGameState == STATE_MENU)
 	{
 		// draws background
@@ -129,8 +136,78 @@ bool MainGameUpdate( float elapsedTime )
 
 	if (gameState.currentGameState == STATE_LEVEL_CLEARED)
 	{
-		Play::DrawFontText("64px", "PRESS SPACE TO START",
+		// draws background
+		Play::DrawBackground();
+		// draws title
+		Play::DrawFontText("132px", "LEVEL CLEARED!",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 140 }, Play::CENTRE);
+		// draws controls
+
+		Play::DrawFontText("64px", "PRESS ESC TO EXIT",
 			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
+		
+		Play::DrawFontText("64px", "PRESS SPACE TO START THE NEXT LEVEL",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 100 }, Play::CENTRE);
+		
+		player.velocity = { 0,0 };
+		Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
+
+
+		//idle fry
+		Play::SetSprite(player, "fry_idle_2q_4", 0.2f);
+		Play::UpdateGameObject(player);
+		Play::DrawObject(player);
+		Play::PresentDrawingBuffer();
+		if (Play::KeyPressed(VK_SPACE))
+		{
+			gameState.currentGameState = STATE_PLAY;
+			enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+
+		}
+		return Play::KeyDown(VK_ESCAPE);
+	}
+
+	if (gameState.currentGameState == STATE_GAMEOVER)
+	{
+		// draws background
+		//again
+		Play::DrawBackground();
+		// draws title
+		Play::DrawFontText("132px", "GAME OVER!",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 140 }, Play::CENTRE);
+		// draws controls
+
+		Play::DrawFontText("64px", "PRESS ESC TO EXIT",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
+		
+		Play::DrawFontText("64px", "PRESS SPACE TO TRY AGAIN",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 100 }, Play::CENTRE);
+		
+		player.velocity = { 0,0 };
+		Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
+
+
+		//idle fry
+		Play::SetSprite(player, "fry_idle_2q_4", 0.2f);
+		Play::UpdateGameObject(player);
+		Play::DrawObject(player);
+		Play::PresentDrawingBuffer();
+		if (Play::KeyPressed(VK_SPACE))
+		{
+			gameState.currentGameState = STATE_PLAY;
+			enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
+			enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+
+		}
 		return Play::KeyDown(VK_ESCAPE);
 	}
 

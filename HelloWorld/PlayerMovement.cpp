@@ -41,15 +41,15 @@ void HandlePlayerMovement(float _elapsedTime)
 	}
 	if (player.Dashing == true)
 	{
-		moveSpeed = 6;
+		moveSpeed = 10;
 		player.Timer += _elapsedTime;
 	}
-	if (player.Timer >= 0.5)
+	if (player.Timer >= 0.1)
 	{
 		player.Dashing = false;
 		player.Timer += _elapsedTime;
 	}
-	if (player.Timer >= 4)
+	if (player.Timer >= 3)
 	{
 		player.Timer = 0;
 	}
