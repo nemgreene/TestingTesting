@@ -36,6 +36,4 @@ void HandlePlayerMovement()
 	player.velocity = tempVelocity;
 	if (MaxsCollisionChecker({ player.pos.x, player.pos.y }, simpleCollisionMap))
 		player.pos = player.oldPos;
-	utilDebugString("PLAY SPEED X: " + std::to_string(player.velocity.x), 100, 300);
-	utilDebugString("PLAY SPEED Y: " + std::to_string(player.velocity.y), 100, 400);
 }
