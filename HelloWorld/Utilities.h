@@ -1,8 +1,9 @@
+#pragma once
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Play.h"
 #include "Maths.h"
+#include "SpriteManager.h"
 
-#pragma once
 
 // Accepts 2 position vectors, and calculates the directional vector from vec1 to vec 2
 // Arguments:
@@ -31,4 +32,17 @@ enum GameObjectType
 	TYPE_DESTROYED,
 	TYPE_UI,
 	TYPE_BULLET_ENEMY,
+};
+
+enum GameStateType {
+	STATE_MENU,
+	STATE_PLAY,
+	STATE_GAMEOVER,
+};
+
+struct GameState {
+	int score = 0;
+	int MaxPlayerHealth = 100;
+	int PlayerCurrentHealth = 100;
+	GameStateType currentGameState = STATE_MENU;
 };

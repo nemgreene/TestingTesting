@@ -18,19 +18,8 @@ int DISPLAY_SCALE = 1;
 
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
 
-enum GameStateType 
-{
-	STATE_MENU,
-	STATE_PLAY,
-	STATE_GAMEOVER,
-};
 
-struct GameState {
-	int score = 0;
-	int MaxPlayerHealth = 100;
-	int PlayerCurrentHealth = 100;
-	GameStateType currentGameState = STATE_MENU;
-};
+
 
 GameState gameState;
 
@@ -55,7 +44,7 @@ void HandleEnemyMovement();
 #pragma endregion
 
 SpriteManager spriteManager = SpriteManager();
-EnemyController enemyController = EnemyController(&spriteManager);
+EnemyController enemyController = EnemyController(&spriteManager, &gameState);
 
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
 Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
@@ -70,7 +59,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::CentreAllSpriteOrigins();
 	Play::LoadBackground("Data\\Backgrounds\\testing_background.png");
 
-	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 50, "fry");
+	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 20, "fry");
 	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "Chicken_Gun");
 	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "lava_gun");
 
@@ -90,11 +79,13 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 
 	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
-	//enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
-	//enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
-	//enemyController.spawnEnemy(TYPE_ENEMY, { 550, 350 }, 5, "robit");
-	//enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
-	//enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+	enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
+	enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");  
+	enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");  
+	enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
+	enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+	/*
+	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");*/
 
 	enemyController.playerId = iPlayer;
 }
@@ -119,10 +110,9 @@ bool MainGameUpdate( float elapsedTime )
 	//catch user inputs
 
 	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun, &secondaryGun);
-
 	HandlePlayerMovement();
+
 	//tick all sprites
-	spriteManager.tickSprites(vMousePos, vAimVec.rad(), elapsedTime);
 
 	//tick all bullets
 	primaryGun.moveBullets();
@@ -135,7 +125,10 @@ bool MainGameUpdate( float elapsedTime )
 	utilJanitor();
 
 	//
+	enemyController.checkPlayerCollisions();
 	enemyController.moveEnemies();
+
+	spriteManager.tickSprites(vMousePos, vAimVec.rad(), elapsedTime);
 
 	//display
 	//dismount
