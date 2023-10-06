@@ -81,7 +81,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	spriteManager.initializeSprites(vInitializeSpriteMap);
 
 
-	
+
 	/*
 	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");*/
 
@@ -91,19 +91,71 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 bool dying = true;
 bool spawned = false;
+
+bool launched = false;
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	//gameState.currentGameState = STATE_PLAY;
-
-	if (enemyController._enemyIds.size() < 1) {
+	 
+	if (gameState.currentGameState != STATE_MENU && launched && enemyController._enemyIds.size() < 1) {
 		gameState.currentGameState = STATE_LEVEL_CLEARED;
 	}
 	if (gameState.PlayerCurrentHealth < 1)
 	{
 		gameState.currentGameState = STATE_GAMEOVER;
 	}
+	if (gameState.currentGameState == STATE_GAMEOVER)
+	{
+		// draws background
+		//again
+		Play::DrawBackground();
+		// draws title
+		Play::DrawFontText("132px", "GAME OVER!",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 140 }, Play::CENTRE);
+		// draws controls
+
+		Play::DrawFontText("64px", "PRESS ESC TO EXIT",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
+
+		Play::DrawFontText("64px", "PRESS SPACE TO TRY AGAIN",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 100 }, Play::CENTRE);
+
+		player.velocity = { 0,0 };
+		Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
+
+
+		//idle 
+		if (dying) {
+			Play::SetSprite(player, "fry_idle_death_10", 0.2f);
+
+			if (player.frame == 9) dying = false;
+		}
+		if (!dying)
+		{
+			Play::SetSprite(player, "fry_death_static", 0.2f);
+
+		}
+
+		Play::UpdateGameObject(player);
+		Play::DrawObject(player);
+		Play::PresentDrawingBuffer();
+		if (Play::KeyPressed(VK_SPACE))
+		{
+			gameState.currentGameState = STATE_PLAY;
+			gameState.PlayerCurrentHealth = 100;
+			Play::DestroyGameObjectsByType(TYPE_ENEMY);
+			Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
+			Play::DestroyGameObjectsByType(TYPE_BULLET_PRIMARY);
+			Play::DestroyGameObjectsByType(TYPE_BULLET_SECONDARY);
+			dying = true;
+			spawned = false;
+
+		}
+		return Play::KeyDown(VK_ESCAPE);
+	}
+
 	if (gameState.currentGameState == STATE_MENU)
 	{
 		// draws background
@@ -128,6 +180,7 @@ bool MainGameUpdate( float elapsedTime )
 		{
 			gameState.currentGameState = STATE_PLAY;
 			PlayMusic();
+			launched = true;
 		}
 		return Play::KeyDown(VK_ESCAPE);
 	}
@@ -165,57 +218,7 @@ bool MainGameUpdate( float elapsedTime )
 			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");
 			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
 			enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
-
-		}
-		return Play::KeyDown(VK_ESCAPE);
-	}
-
-	if (gameState.currentGameState == STATE_GAMEOVER)
-	{
-		// draws background
-		//again
-		Play::DrawBackground();
-		// draws title
-		Play::DrawFontText("132px", "GAME OVER!",
-			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 140 }, Play::CENTRE);
-		// draws controls
-
-		Play::DrawFontText("64px", "PRESS ESC TO EXIT",
-			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
-		
-		Play::DrawFontText("64px", "PRESS SPACE TO TRY AGAIN",
-			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 100 }, Play::CENTRE);
-		
-		player.velocity = { 0,0 };
-		Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
-
-
-		//idle 
-		if (dying) {
-			Play::SetSprite(player, "fry_idle_death_10", 0.2f);
-
-			if (player.frame == 9) dying = false;
-		}
-		if (!dying)
-		{
-			Play::SetSprite(player, "fry_death_static", 0.2f);
-
-		}
-
-		Play::UpdateGameObject(player);
-		Play::DrawObject(player);
-		Play::PresentDrawingBuffer();
-		if (Play::KeyPressed(VK_SPACE))
-		{
-			gameState.currentGameState = STATE_PLAY;
-			gameState.PlayerCurrentHealth = 100;
-			Play::DestroyGameObjectsByType(TYPE_ENEMY);
-			Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
-			Play::DestroyGameObjectsByType(TYPE_BULLET_PRIMARY);
-			Play::DestroyGameObjectsByType(TYPE_BULLET_SECONDARY);
-			dying = true;
-			spawned = false;
-
+			spawned = true;
 		}
 		return Play::KeyDown(VK_ESCAPE);
 	}
