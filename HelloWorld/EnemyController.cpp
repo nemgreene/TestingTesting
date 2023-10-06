@@ -28,17 +28,17 @@ void EnemyController::fireGun(int id) {
 
 	Vec2 vBullet = utilHandleCursorDirection(Vec2(enemy.pos), Vec2(player.pos));
 
-	int iBullet = Play::CreateGameObject(TYPE_BULLET_ENEMY, enemy.pos, 11, "acid");
+	int iBullet = Play::CreateGameObject(TYPE_BULLET_ENEMY, enemy.pos, 11, "tenni_ball_bullets_4");
 	GameObject& bulletSpawned = Play::GetGameObject(iBullet);
 
 	bulletSpawned.velocity = { vBullet.GetX() * 2,vBullet.GetY() * 2, };
 	//bulletSpawned.rotation = vBullet.rad();
 
-	Play::SetSprite(bulletSpawned, "acid_bullets_4", 0.2f);
+	Play::SetSprite(bulletSpawned, "tenni_ball_bullets_4", 0.2f);
 	Play::UpdateGameObject(bulletSpawned);
 
 	////pass to sprite manager to track drawing
-	_spriteManager->addSprite(iBullet,"acid_bullets_4", 1);
+	_spriteManager->addSprite(iBullet,"tenni_ball_bullets_4", 1);
 	return;
 }
 
@@ -91,11 +91,24 @@ void EnemyController::checkPlayerCollisions()
 	for (int iBullet : bullets)
 	{
 		GameObject& bullet = Play::GetGameObject(iBullet);
-		bool colliding = Play::IsColliding(player, bullet);
-		if (colliding)
+		bool pCol = Play::IsColliding(player, bullet);
+		bool wCol = MaxsCollisionChecker({ bullet.pos.x , bullet.pos.y }, simpleCollisionMap);
+
+		if (wCol)
+		{
+			bullet.type = TYPE_DESTROYED;
+			Play::UpdateGameObject(bullet);
+			_spriteManager->deleteSprites(iBullet);
+			continue;
+
+		}
+		if (pCol)
 		{
 			bullet.type = TYPE_DESTROYED;
 			_gameState->PlayerCurrentHealth = _gameState->PlayerCurrentHealth - 10;
+			Play::UpdateGameObject(bullet);
+			_spriteManager->deleteSprites(iBullet);
+			continue;
 		}
 	}
 }

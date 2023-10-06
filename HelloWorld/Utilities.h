@@ -5,6 +5,7 @@
 #include "SpriteManager.h"
 
 
+
 // Accepts 2 position vectors, and calculates the directional vector from vec1 to vec 2
 // Arguments:
 // Vec2 vec1: origin vector
