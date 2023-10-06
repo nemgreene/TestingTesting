@@ -81,18 +81,16 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	spriteManager.initializeSprites(vInitializeSpriteMap);
 
 
-	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");  
-	enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");  
-	enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+	
 	/*
 	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");*/
 
 
 	enemyController.playerId = iPlayer;
 }
+
+bool dying = true;
+bool spawned = false;
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
@@ -192,26 +190,46 @@ bool MainGameUpdate( float elapsedTime )
 		Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
 
 
-		//idle fry
-		Play::SetSprite(player, "fry_idle_2q_4", 0.2f);
+		//idle 
+		if (dying) {
+			Play::SetSprite(player, "fry_idle_death_10", 0.2f);
+
+			if (player.frame == 9) dying = false;
+		}
+		if (!dying)
+		{
+			Play::SetSprite(player, "fry_death_static", 0.2f);
+
+		}
+
 		Play::UpdateGameObject(player);
 		Play::DrawObject(player);
 		Play::PresentDrawingBuffer();
 		if (Play::KeyPressed(VK_SPACE))
 		{
 			gameState.currentGameState = STATE_PLAY;
-			enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
-			enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
-			enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
-			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");
-			enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
-			enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+			gameState.PlayerCurrentHealth = 100;
+			Play::DestroyGameObjectsByType(TYPE_ENEMY);
+			Play::DestroyGameObjectsByType(TYPE_BULLET_ENEMY);
+			Play::DestroyGameObjectsByType(TYPE_BULLET_PRIMARY);
+			Play::DestroyGameObjectsByType(TYPE_BULLET_SECONDARY);
+			dying = true;
+			spawned = false;
 
 		}
 		return Play::KeyDown(VK_ESCAPE);
 	}
 
-
+	if (gameState.currentGameState == STATE_PLAY && !spawned)
+	{
+		enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+		enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
+		enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
+		enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");
+		enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
+		enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+		spawned = true;
+	}
 
 	Play::DrawBackground();
 
