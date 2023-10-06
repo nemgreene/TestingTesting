@@ -99,6 +99,3 @@ void EnemyController::checkPlayerCollisions()
 		}
 	}
 }
-
-
-
