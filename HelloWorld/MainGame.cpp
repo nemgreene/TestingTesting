@@ -19,9 +19,6 @@ int DISPLAY_SCALE = 1;
 
 Vec2 vPlayerPos(DISPLAY_WIDTH/2, DISPLAY_HEIGHT / 2);
 
-
-
-
 GameState gameState;
 
 #pragma region NeedsWork
@@ -50,6 +47,7 @@ EnemyController enemyController = EnemyController(&spriteManager, &gameState);
 ChickenGun primaryGun = ChickenGun::ChickenGun(TYPE_BULLET_PRIMARY, "Chicken_Bullets_4", &spriteManager);
 Gun secondaryGun = Gun::Gun(TYPE_BULLET_SECONDARY, "laser_2", &spriteManager);
 
+void PlayMusic();
 
 
 
@@ -100,15 +98,44 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
+	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
+
+	if (gameState.currentGameState == STATE_MENU)
+	{
+		// draws background
+		Play::DrawBackground();
+		// draws title
+		Play::DrawFontText("132px", "TESTING",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 140 }, Play::CENTRE);
+		Play::DrawFontText("64px", "2",
+			{ DISPLAY_WIDTH / 2 + 105, DISPLAY_HEIGHT / 2 - 180 }, Play::CENTRE);
+		// draws controls
+		Play::DrawFontText("64px", "WASD TO MOVE, MOUSE TO AIM, MOUSE CLICK TO SHOOT!",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f }, Play::CENTRE);
+		Play::DrawFontText("64px", "PRESS SPACE TO START",
+			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
+
+		//idle fry
+		Play::SetSprite(player, "phillip_idle_2q_4", 0.2f);
+		Play::UpdateGameObject(player);
+		Play::DrawObject(player);
+		Play::PresentDrawingBuffer();
+		if (Play::KeyPressed(VK_SPACE) == true)
+		{
+			gameState.currentGameState = STATE_PLAY;
+			PlayMusic();
+		}
+		return Play::KeyDown(VK_ESCAPE);
+	}
+
+
 
 
 	Play::DrawBackground();
 
 
-	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
 	GameObject& secondaryGunObj = Play::GetGameObjectByType(TYPE_GUN_SECONDARY);
 
-	//Play::ClearDrawingBuffer( Play::cOrange );
 	//get mouse position
 	Vec2 vMousePos = Play::GetMousePos();
 	//calculate aim vector
@@ -147,6 +174,26 @@ int MainGameExit( void )
 	Play::DestroyManager();
 	return PLAY_OK;
 }
+
+void PlayMusic()
+{
+	int randomRoll = (std::rand() % 3) + 1;
+
+	if (randomRoll == 1)
+	{
+		Play::StartAudioLoop("science_action_01_loop");
+	}
+	else if (randomRoll == 2)
+	{
+		Play::StartAudioLoop("science_action_02_loop");
+	}
+	else if (randomRoll == 3)
+	{
+		Play::StartAudioLoop("science_action_04_loop");
+	}
+}
+
+
 
 void UpdateGameState()
 

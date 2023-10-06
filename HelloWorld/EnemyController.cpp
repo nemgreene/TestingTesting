@@ -112,6 +112,3 @@ void EnemyController::checkPlayerCollisions()
 		}
 	}
 }
-
-
-
