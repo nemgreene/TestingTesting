@@ -23,11 +23,11 @@ void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun, Gun* second
 
 		if (randomRoll == 1)
 		{
-			Play::StartAudioLoop("zap_01");
+			Play::PlayAudio("zap_01");
 		}
 		else
 		{
-			Play::StartAudioLoop("zap_02");
+			Play::PlayAudio("zap_02");
 		}
 
 	}
@@ -41,15 +41,15 @@ void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun, Gun* second
 
 		if (randomRoll == 1)
 		{
-			Play::StartAudioLoop("boop_01");
+			Play::PlayAudio("boop_01");
 		}
 		else if (randomRoll == 2)
 		{
-			Play::StartAudioLoop("boop_02");
+			Play::PlayAudio("boop_02");
 		}
 		else
 		{
-			Play::StartAudioLoop("boop_02");
+			Play::PlayAudio("boop_03");
 		}
 	}
 }
