@@ -23,11 +23,11 @@ void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun, Gun* second
 
 		if (randomRoll == 1)
 		{
-			Play::PlayAudio("zap_01");
+			Play::PlayAudio("cluck_01");
 		}
 		else
 		{
-			Play::PlayAudio("zap_02");
+			Play::PlayAudio("cluck_02");
 		}
 
 	}
@@ -37,19 +37,16 @@ void handleInputs(Vec2 vPlayerPos, Vec2 vAimVector, Gun* primaryGun, Gun* second
 	{
 		secondaryGun->spawnBullet(vPlayerPos, vAimVector);
 	
-		int randomRoll = (std::rand() % 3) + 1;
+		int randomRoll = (std::rand() % 2) + 1;
 
 		if (randomRoll == 1)
 		{
-			Play::PlayAudio("boop_01");
-		}
-		else if (randomRoll == 2)
-		{
-			Play::PlayAudio("boop_02");
+			Play::PlayAudio("zap_01");
 		}
 		else
 		{
-			Play::PlayAudio("boop_03");
+			Play::PlayAudio("zap_02");
 		}
+
 	}
 }

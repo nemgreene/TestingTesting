@@ -153,8 +153,8 @@ bool MainGameUpdate( float elapsedTime )
 
 
 	//tick all bullets
-	primaryGun.moveBullets();
-	secondaryGun.moveBullets();
+	primaryGun.moveBullets(elapsedTime);
+	secondaryGun.moveBullets(elapsedTime);
 
 	//Ui sprite render
 	handleUI(gameState.PlayerCurrentHealth, gameState.MaxPlayerHealth, DISPLAY_WIDTH, DISPLAY_HEIGHT);

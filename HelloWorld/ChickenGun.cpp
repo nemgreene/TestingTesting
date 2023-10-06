@@ -9,18 +9,23 @@ ChickenGun::ChickenGun(GameObjectType bulletType, std::string spriteName, Sprite
 
 void ChickenGun::spawnBullet(Vec2 vOrigin, Vec2 vDir)
 {
-	//create bullet objec
-	int iBullet = Play::CreateGameObject(GetGameObjectType(), Point2D(vOrigin.GetX(), vOrigin.GetY()), 5, GetSpriteName().c_str());
+	if (getFiredGun() == false)
+	{
+		//create bullet objec
+		int iBullet = Play::CreateGameObject(GetGameObjectType(), Point2D(vOrigin.GetX(), vOrigin.GetY()), 5, GetSpriteName().c_str());
 
-	GameObject& bulletSpawned = Play::GetGameObject(iBullet);
-	bulletSpawned.velocity = { vDir.GetX(),vDir.GetY(), };
-	bulletSpawned.rotation = 0;
-	//pass to sprite manager to track drawing
-	Gun::GetSpriteManager()->addSprite(iBullet, GetSpriteName(), 1);
+		GameObject& bulletSpawned = Play::GetGameObject(iBullet);
+		bulletSpawned.velocity = { vDir.GetX(),vDir.GetY(), };
+		bulletSpawned.rotation = 0;
+		//pass to sprite manager to track drawing
+		Gun::GetSpriteManager()->addSprite(iBullet, GetSpriteName(), 1);
+		setFiredGun(true);
+	}
+
 
 }
 
-void ChickenGun::moveBullets()
+void ChickenGun::moveBullets(float _elapsedTime)
 {
 	//collect all bullets belonging to this gun and all enemies
 	std::vector<int> vEnemyIds = Play::CollectGameObjectIDsByType(TYPE_ENEMY);
@@ -74,7 +79,15 @@ void ChickenGun::moveBullets()
 			//sprite facing left
 		}
 	}
-
+	if (getFiredGun())
+	{
+		setTimer(getTimer() + _elapsedTime);
+		if (getTimer() > getCooldown())
+		{
+			setTimer(0);
+			setFiredGun(false);
+		}
+	}
 }
 
 
