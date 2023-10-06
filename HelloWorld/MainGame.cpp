@@ -80,10 +80,12 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
 	enemyController.spawnEnemy(TYPE_ENEMY, { 150, 350 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 550, 350 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
-	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");
+	enemyController.spawnEnemy(TYPE_ENEMY, { 250, 350 }, 5, "robit");  
+	enemyController.spawnEnemy(TYPE_ENEMY, { 750, 150 }, 5, "robit");  
+	enemyController.spawnEnemy(TYPE_ENEMY, { 750, 450 }, 5, "robit");
+	enemyController.spawnEnemy(TYPE_ENEMY, { 850, 450 }, 5, "robit");
+	/*
+	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");*/
 
 	enemyController.playerId = iPlayer;
 }

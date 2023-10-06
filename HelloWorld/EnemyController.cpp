@@ -46,7 +46,7 @@ void EnemyController::moveEnemies() {
 	for (auto const& enemyMap : _enemyIds)
 	{
 		GameObject& obj = Play::GetGameObject(enemyMap.first);
-		if (obj.type == -1)
+		if (obj.type == -1 || (obj.pos.x == 0 && obj.pos.y == 0))
 		{
 			_enemyIds.erase(enemyMap.first);
 			return;
