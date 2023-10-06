@@ -98,7 +98,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
-	//gameState.currentGameState = STATE_PLAY;
+
 	if (gameState.currentGameState == STATE_MENU)
 	{
 		// draws background
@@ -129,9 +129,14 @@ bool MainGameUpdate( float elapsedTime )
 
 	if (gameState.currentGameState == STATE_LEVEL_CLEARED)
 	{
+		Play::DrawBackground();
 		Play::DrawFontText("64px", "PRESS SPACE TO START",
 			{ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT * 0.75f + 40 }, Play::CENTRE);
-		return Play::KeyDown(VK_ESCAPE);
+		if (Play::KeyPressed(VK_SPACE) == true)
+		{
+			gameState.currentGameState = STATE_PLAY;
+			PlayMusic();
+		}
 	}
 
 
