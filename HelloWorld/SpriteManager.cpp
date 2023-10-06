@@ -15,46 +15,70 @@ void SpriteManager::_checkPlayerSprite(Vec2 vMousePos, float fAimVec)
 	//check user orientation
 	GameObject& player = Play::GetGameObjectByType(0);
 	std::string rot = std::to_string(fAimVec);
+	GameObject& secondaryGun = Play::GetGameObjectByType(TYPE_GUN_SECONDARY);
+	secondaryGun.pos = player.pos;
 
 
 	//down
 	if (2.094 > fAimVec && fAimVec > 1.047)
 	{
 		player.spriteScale = { 1, 1 };
-		changeSprites(player.GetId(), "fry_ruinning_down_6");
+		secondaryGun.spriteScale = { 1, 1 };
+		secondaryGun.rotation = fAimVec;
+		changeSprites(player.GetId(), ((player.velocity.x == 0 && player.velocity.y == 0 ) ? "fry_idle_1q_6":"fry_ruinning_down_6"));
+		updateSpriteOrder({ {player.GetId(), 4}, {secondaryGun.GetId(),5}});
 	}
 
 	//down right
 	else if (1.047 > fAimVec && fAimVec > 0)
 	{
 
+		secondaryGun.spriteScale = { 1, 1 };
 		player.spriteScale = { 1, 1 };
-		changeSprites(player.GetId(), "fry_ruinning_dr_6");
+		secondaryGun.rotation = fAimVec;
+		changeSprites(player.GetId(), ((player.velocity.x == 0 && player.velocity.y == 0 ) ? "fry_idle_2q_4":"fry_ruinning_dr_6"));
+		updateSpriteOrder({ {player.GetId(), 4}, {secondaryGun.GetId(),5}});
 	}
 	//down left
 	else if (PLAY_PI > fAimVec && fAimVec > 2.094)
 	{
 		player.spriteScale = { -1, 1 };
-		changeSprites(player.GetId(), "fry_ruinning_dr_6");
+		secondaryGun.spriteScale = { -1, 1 };
+
+		secondaryGun.rotation = PLAY_PI - fAimVec;
+
+		changeSprites(player.GetId(), ((player.velocity.x == 0 && player.velocity.y == 0 ) ? "fry_idle_2q_4":"fry_ruinning_dr_6"));
+		updateSpriteOrder({ {player.GetId(), 4}, {secondaryGun.GetId(),5}});
 	}
 	//up right
 	else if (0 > fAimVec && fAimVec > -1.047)
 	{
 		player.spriteScale = { 1, 1 };
+		secondaryGun.rotation = fAimVec;
+		secondaryGun.spriteScale = { 1, 1 };
 		changeSprites(player.GetId(), "fry_ruinning_ur_6");
+		changeSprites(player.GetId(), ((player.velocity.x == 0 && player.velocity.y == 0 ) ? "fry_idle_3q_4":"fry_ruinning_ur_6"));
+		updateSpriteOrder({ {player.GetId(), 5}, {secondaryGun.GetId(),4}});
 
 	}
 	//up left
 	else if (-2.094 > fAimVec && fAimVec > (PLAY_PI * -1))
 	{
+		secondaryGun.spriteScale = { -1, 1 };
 		player.spriteScale = { -1, 1 };
-		changeSprites(player.GetId(), "fry_ruinning_ur_6");
+		secondaryGun.rotation = (PLAY_PI * -1) - fAimVec;
+		changeSprites(player.GetId(), ((player.velocity.x == 0 && player.velocity.y == 0 ) ? "fry_idle_3q_4":"fry_ruinning_ur_6"));
+		updateSpriteOrder({ {player.GetId(), 5}, {secondaryGun.GetId(),4}});
 	}
 	//up
 	else if (-1.047 > fAimVec && fAimVec > -2.094)
 	{
+		secondaryGun.spriteScale = { 1, 1 };
 		player.spriteScale = { 1, 1 };
-		changeSprites(player.GetId(), "fry_ruinning_up_6");
+		secondaryGun.rotation = fAimVec;
+;
+		changeSprites(player.GetId(), ((player.velocity.x == 0 && player.velocity.y == 0 ) ? "fry_idle_4q_6":"fry_ruinning_up_6"));
+		updateSpriteOrder({ {player.GetId(), 5}, {secondaryGun.GetId(),4}});
 	}
 };;
 
@@ -76,7 +100,7 @@ Vec2 SpriteManager::_findSpriteCoords(int id) {
 //load all sprites into cache, build layers, iterate over them, draw them in order 
 void SpriteManager::initializeSprites(std::vector<std::map<int, std::string>> vInitializeSpriteMap)
 {
-	SpriteManager::_spriteCache = vInitializeSpriteMap;
+	_spriteCache = vInitializeSpriteMap;
 };
 
 
@@ -86,14 +110,14 @@ void SpriteManager::changeSprites(int id, std::string spriteName)
 	Vec2 coords = SpriteManager::_findSpriteCoords(id);
 	if (coords.GetX() != -1)
 	{
-		SpriteManager::_spriteCache[coords.GetY()][coords.GetX()] = spriteName;
+		_spriteCache[coords.GetY()][coords.GetX()] = spriteName;
 	}
 };
 //add sprite to cache
 // 
 void SpriteManager::addSprite(int id, std::string spriteName, int layerIndex)
 {
-	SpriteManager::_spriteCache[layerIndex].insert(std::pair<int, std::string>(id, spriteName));
+	_spriteCache[layerIndex].insert(std::pair<int, std::string>(id, spriteName));
 	_spriteCache;
 };
 // 

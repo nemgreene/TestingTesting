@@ -1,15 +1,16 @@
 #define PLAY_IMPLEMENTATION
 #define PLAY_USING_GAMEOBJECT_MANAGER
-#include "Play.h"
-#include "Maths.h"
-#include "SpriteManager.h"
-#include "Utilities.h"
-#include "HandleInputs.h"
-#include "PlayerMovement.h"
-#include "Gun.h"
+
 #include "UI.h"
 #include "Map.h"
+#include "Gun.h"
+#include "Play.h"
+#include "Maths.h"
+#include "Utilities.h"
 #include "ChickenGun.h"
+#include "HandleInputs.h"
+#include "SpriteManager.h"
+#include "PlayerMovement.h"
 #include "EnemyController.h"
 
 int DISPLAY_WIDTH = 1254;//38 tiles across
@@ -61,8 +62,13 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 
 	int iPlayer = Play::CreateGameObject(TYPE_PLAYER, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 20, "fry");
 	int iGunPrimary = Play::CreateGameObject(TYPE_GUN_PRIMARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "Chicken_Gun");
-	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "lava_gun");
 
+	int iGunSecondary = Play::CreateGameObject(TYPE_GUN_SECONDARY, { vPlayerPos.GetX(), vPlayerPos.GetY() }, 5, "shotgun");
+
+	Point2D secondaryOrigin = Play::GetSpriteOrigin(iGunSecondary);
+
+	Play::MoveSpriteOrigin("shotgun", Play::GetSpriteWidth(Play::GetSpriteId("shotgun"))/-4, 0);
+	Play::UpdateGameObject(Play::GetGameObject(iGunSecondary));
 
 
 	std::vector<std::map<int, std::string>> vInitializeSpriteMap = {
@@ -71,7 +77,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 		{},									 //Enemies       2
 		{},                                  //enemies guns  3
 		{{iPlayer, "fry_ruinning_down_6"} }, //Char          4
-		{{iGunPrimary, "lava_gun_1"}},       //Guns          5
+		{{iGunSecondary, "shotgun"}},       //Guns          5
 		{}									 //foreground    6
 	};
 
@@ -87,6 +93,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	/*
 	enemyController.spawnEnemy(TYPE_ENEMY, { 350, 350 }, 5, "robit");*/
 
+
 	enemyController.playerId = iPlayer;
 }
 
@@ -99,6 +106,8 @@ bool MainGameUpdate( float elapsedTime )
 
 
 	GameObject& player = Play::GetGameObjectByType(TYPE_PLAYER);
+	GameObject& secondaryGunObj = Play::GetGameObjectByType(TYPE_GUN_SECONDARY);
+
 	//Play::ClearDrawingBuffer( Play::cOrange );
 	//get mouse position
 	Vec2 vMousePos = Play::GetMousePos();
@@ -106,13 +115,9 @@ bool MainGameUpdate( float elapsedTime )
 	Vec2 vAimVec = utilHandleCursorDirection({ player.pos.x,player.pos.y }, vMousePos);
 
 
-	utilDebugString("The mouse is colliding: " + std::to_string(MaxsCollisionChecker({player.pos.x,player.pos.y}, simpleCollisionMap)), 400, 400);
-	//catch user inputs
-
 	handleInputs({ player.pos.x,player.pos.y }, vAimVec, &primaryGun, &secondaryGun);
 	HandlePlayerMovement();
 
-	//tick all sprites
 
 	//tick all bullets
 	primaryGun.moveBullets();
