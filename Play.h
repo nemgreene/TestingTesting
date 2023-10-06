@@ -4111,7 +4111,7 @@ namespace Play
 	void PresentDrawingBuffer()
 	{
 		PlayGraphics& pblt = PlayGraphics::Instance();
-		static bool debugInfo = false;
+		static bool debugInfo = true;
 		DrawingSpace originalDrawSpace = drawSpace;
 
 		if (KeyPressed(VK_F1))

@@ -11,6 +11,7 @@ void ChickenGun::spawnBullet(Vec2 vOrigin, Vec2 vDir)
 {
 	//create bullet objec
 	int iBullet = Play::CreateGameObject(GetGameObjectType(), Point2D(vOrigin.GetX(), vOrigin.GetY()), 5, GetSpriteName().c_str());
+
 	GameObject& bulletSpawned = Play::GetGameObject(iBullet);
 	bulletSpawned.velocity = { vDir.GetX(),vDir.GetY(), };
 	bulletSpawned.rotation = 0;
@@ -47,6 +48,9 @@ void ChickenGun::moveBullets()
 				bullet.type = TYPE_DESTROYED;
 				Play::UpdateGameObject(bullet);
 				Play::UpdateGameObject(enemy);
+				SpriteManager* spriteManager = GetSpriteManager();
+				spriteManager->deleteSprites(id);
+
 			}
 			else
 			{

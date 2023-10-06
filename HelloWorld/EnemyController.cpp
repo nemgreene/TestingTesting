@@ -4,8 +4,9 @@
 
 EnemyController::EnemyController() {};
 
-EnemyController::EnemyController(SpriteManager* spriteManager) {
+EnemyController::EnemyController(SpriteManager* spriteManager, GameState* gameState) {
 	_spriteManager = spriteManager;
+	_gameState = gameState;
 };
 
 
@@ -45,10 +46,14 @@ void EnemyController::moveEnemies() {
 	for (auto const& enemyMap : _enemyIds)
 	{
 		GameObject& obj = Play::GetGameObject(enemyMap.first);
-
+		if (obj.type == -1)
+		{
+			_enemyIds.erase(enemyMap.first);
+			return;
+		}
 		_enemyIds[enemyMap.first] = _enemyIds[enemyMap.first] + 1 ;
 
-		if (_enemyIds[enemyMap.first] > 40) {
+		if (obj.type && _enemyIds[enemyMap.first] > 40) {
 			fireGun(enemyMap.first);
 			_enemyIds[enemyMap.first] = 0;
 		};
@@ -90,6 +95,7 @@ void EnemyController::checkPlayerCollisions()
 		if (colliding)
 		{
 			bullet.type = TYPE_DESTROYED;
+			_gameState->PlayerCurrentHealth = _gameState->PlayerCurrentHealth - 10;
 		}
 	}
 }

@@ -9,6 +9,7 @@ class EnemyController
 private:
 
 	SpriteManager* _spriteManager;
+	GameState* _gameState;
 
 public:
 
@@ -18,7 +19,7 @@ public:
 
 
 	EnemyController();
-	EnemyController(SpriteManager* spriteManager);
+	EnemyController(SpriteManager* spriteManager, GameState* gameState);
 
 	void spawnEnemy(GameObjectType type, Point2f origin, int radius, std::string spriteName);
 	void fireGun(int id);
