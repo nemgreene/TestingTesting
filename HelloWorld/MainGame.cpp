@@ -82,10 +82,6 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	enemyController.playerId = iPlayer;
 }
 
-bool dying = true;
-bool spawned = false;
-
-bool launched = false;
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
