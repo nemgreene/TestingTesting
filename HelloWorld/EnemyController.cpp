@@ -84,12 +84,12 @@ void EnemyController::moveEnemies() {
 		if (randomRoll  > 9999)
 		{
 			int randomRoll2 = (std::rand() % 100) + 1;
-			if (randomRoll2 > 90)
-			{
-				//gonna kill him
-				Play::PlayAudio("robit_voice_01");
+			//if (randomRoll2 > 90)
+			//{
+			//	//gonna kill him
+			//	Play::PlayAudio("robit_voice_01");
 
-			}			
+			//}			
 			if (randomRoll2  < 45 )
 			{
 				//gonna kill him

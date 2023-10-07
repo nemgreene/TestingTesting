@@ -23,22 +23,15 @@ GameState gameState;
 void PlayMusic();
 #pragma region NeedsWork
 
-//Detect map collisions one way or another to make sure nobody walks/flies through walls
-void utilBuildMap();
+//Make sure that penultimate robot scream is triggered on both guns ( all robit destrucitons noised)
+//Make sure robit can swear agian one day
+// fix state managerment (onload shouldnt say level completes)
+// Put in display score
+// put in gun imgs in UI
+// Put in tennis gun
+//
 
-//Handle user commands
-void HandleInputs() {
-	//Once the sprite has been drawn 
-	//Is user moving
-	//Is the user shooting, do they have ammo
-	//Is user dodging, can they dodge, where are they dodging
-	//reload, handle perfect reload
-};
 
-void HandleEnemyMovement();
-// random movement pattern
-// VV
-//a* pathfinding, raytracing
 #pragma endregion
 
 SpriteManager spriteManager = SpriteManager();
